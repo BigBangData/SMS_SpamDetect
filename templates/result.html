@@ -14,8 +14,10 @@
 	</div>
 	</header>
 	<!--<p style="color:blue;font-size:20;text-align: center;"><b>Results for Comment</b></p>> -->
-	<div class="results">	
-	{% if prediction == 1%}
+	<div class="results">
+	{% if prediction == 2%}	
+	<h2 style="color:black;">I have no idea. Really.</h2>	
+	{% elif prediction == 1%}
 	<h2 style="color:red;">SPAM!</h2>
 	{% elif prediction == 0%}
 	<h2 style="color:blue;">That's a legitimate message.</h2>

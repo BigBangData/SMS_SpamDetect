@@ -1,0 +1,100 @@
+2021-03-11T01:59:31.048649+00:00 app[web.1]: 
+2021-03-11T01:59:31.048650+00:00 app[web.1]: During handling of the above exception, another exception occurred:
+2021-03-11T01:59:31.048650+00:00 app[web.1]: 
+2021-03-11T01:59:31.048653+00:00 app[web.1]: Traceback (most recent call last):
+2021-03-11T01:59:31.048681+00:00 app[web.1]: File "/app/.heroku/python/bin/gunicorn", line 8, in <module>
+2021-03-11T01:59:31.048806+00:00 app[web.1]: sys.exit(run())
+2021-03-11T01:59:31.048806+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+2021-03-11T01:59:31.048939+00:00 app[web.1]: WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+2021-03-11T01:59:31.048943+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/app/base.py", line 223, in run
+2021-03-11T01:59:31.049118+00:00 app[web.1]: super(Application, self).run()
+2021-03-11T01:59:31.049123+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/app/base.py", line 72, in run
+2021-03-11T01:59:31.049315+00:00 app[web.1]: Arbiter(self).run()
+2021-03-11T01:59:31.049316+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/arbiter.py", line 232, in run
+2021-03-11T01:59:31.049489+00:00 app[web.1]: self.halt(reason=inst.reason, exit_status=inst.exit_status)
+2021-03-11T01:59:31.049493+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/arbiter.py", line 345, in halt
+2021-03-11T01:59:31.049713+00:00 app[web.1]: self.stop()
+2021-03-11T01:59:31.049714+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/arbiter.py", line 393, in stop
+2021-03-11T01:59:31.049934+00:00 app[web.1]: time.sleep(0.1)
+2021-03-11T01:59:31.049957+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/arbiter.py", line 245, in handle_chld
+2021-03-11T01:59:31.050112+00:00 app[web.1]: self.reap_workers()
+2021-03-11T01:59:31.050120+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.6/site-packages/gunicorn/arbiter.py", line 525, in reap_workers
+2021-03-11T01:59:31.050359+00:00 app[web.1]: raise HaltServer(reason, self.WORKER_BOOT_ERROR)
+2021-03-11T01:59:31.050368+00:00 app[web.1]: gunicorn.errors.HaltServer: <HaltServer 'Worker failed to boot.' 3>
+2021-03-11T01:59:31.117845+00:00 heroku[web.1]: Process exited with status 1
+2021-03-11T01:59:31.204384+00:00 heroku[web.1]: State changed from starting to crashed
+2021-03-11T01:59:34.000000+00:00 app[api]: Build succeeded
+2021-03-11T02:00:20.231874+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=spam-detect42.herokuapp.com request_id=c87c490f-e687-48ed-bb7e-4e36f4078da8 fwd="73.243.78.29" dyno= connect= service= status=503 bytes= protocol=https
+2021-03-11T02:00:20.505153+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=spam-detect42.herokuapp.com request_id=891be603-d6cb-45b0-829f-9df0a7e9fcfa fwd="73.243.78.29" dyno= connect= service= status=503 bytes= protocol=https
+2021-03-11T02:08:34.000000+00:00 app[api]: Build started by user sanches.cello@gmail.com
+2021-03-11T02:10:13.952920+00:00 app[api]: Deploy be119fc8 by user sanches.cello@gmail.com
+2021-03-11T02:10:13.952920+00:00 app[api]: Release v8 created by user sanches.cello@gmail.com
+2021-03-11T02:10:14.118440+00:00 heroku[web.1]: State changed from crashed to starting
+2021-03-11T02:10:31.547362+00:00 heroku[web.1]: Starting process with command `gunicorn spam-detect42:app`
+2021-03-11T02:10:37.599392+00:00 app[web.1]: [2021-03-11 02:10:37 +0000] [4] [INFO] Starting gunicorn 19.9.0
+2021-03-11T02:10:37.599966+00:00 app[web.1]: [2021-03-11 02:10:37 +0000] [4] [INFO] Listening at: http://0.0.0.0:48286 (4)
+2021-03-11T02:10:37.600075+00:00 app[web.1]: [2021-03-11 02:10:37 +0000] [4] [INFO] Using worker: sync
+2021-03-11T02:10:37.603927+00:00 app[web.1]: [2021-03-11 02:10:37 +0000] [9] [INFO] Booting worker with pid: 9
+2021-03-11T02:10:37.647736+00:00 app[web.1]: [2021-03-11 02:10:37 +0000] [10] [INFO] Booting worker with pid: 10
+2021-03-11T02:10:38.888528+00:00 heroku[web.1]: State changed from starting to up
+2021-03-11T02:10:42.545688+00:00 app[web.1]: /app/.heroku/python/lib/python3.6/site-packages/sklearn/base.py:315: UserWarning: Trying to unpickle estimator TfidfTransformer from version 0.23.2 when using version 0.24.1. This might lead to breaking code or invalid results. Use at your own risk.
+2021-03-11T02:10:42.545734+00:00 app[web.1]: UserWarning)
+2021-03-11T02:10:42.565741+00:00 app[web.1]: /app/.heroku/python/lib/python3.6/site-packages/sklearn/base.py:315: UserWarning: Trying to unpickle estimator TfidfTransformer from version 0.23.2 when using version 0.24.1. This might lead to breaking code or invalid results. Use at your own risk.
+2021-03-11T02:10:42.565743+00:00 app[web.1]: UserWarning)
+2021-03-11T02:10:42.985486+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=2b5fc813-1549-4294-9388-8c061feb1cc3 fwd="73.243.78.29" dyno=web.1 connect=1ms service=3015ms status=200 bytes=853 protocol=https
+2021-03-11T02:10:42.986958+00:00 app[web.1]: 10.101.178.182 - - [11/Mar/2021:02:10:42 +0000] "GET / HTTP/1.1" 200 692 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:08.000000+00:00 app[api]: Build succeeded
+2021-03-11T02:11:11.684040+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:11 +0000] "GET / HTTP/1.1" 200 692 "https://dashboard.heroku.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:11.689742+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=5acd3155-5321-48dd-b78a-ee1a6222ccc0 fwd="73.243.78.29" dyno=web.1 connect=1ms service=10ms status=200 bytes=853 protocol=https
+2021-03-11T02:11:11.772607+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:11 +0000] "GET /static/css/styles.css HTTP/1.1" 200 0 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:11.773322+00:00 heroku[router]: at=info method=GET path="/static/css/styles.css" host=spam-detect42.herokuapp.com request_id=1beed192-1f2d-4596-acc2-a88cdcc22056 fwd="73.243.78.29" dyno=web.1 connect=1ms service=9ms status=200 bytes=1103 protocol=https
+2021-03-11T02:11:11.907342+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:11 +0000] "GET /favicon.ico HTTP/1.1" 404 232 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:11.907568+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=spam-detect42.herokuapp.com request_id=c241c32c-f30e-4acb-96eb-b95dc2bddbad fwd="73.243.78.29" dyno=web.1 connect=1ms service=36ms status=404 bytes=385 protocol=https
+2021-03-11T02:11:18.055062+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:18 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:18.055403+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=e9efd9c4-e66b-4098-bf8a-94a63bf0d60a fwd="73.243.78.29" dyno=web.1 connect=0ms service=40ms status=200 bytes=781 protocol=https
+2021-03-11T02:11:20.233537+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:20 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:20.234376+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=a3c4a3ef-de86-429b-b2a3-ac0b7ea110c1 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:11:28.277846+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:28 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:28.278267+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=dd80031a-d46d-4490-8e23-92060e2a54b7 fwd="73.243.78.29" dyno=web.1 connect=0ms service=19ms status=200 bytes=781 protocol=https
+2021-03-11T02:11:31.379083+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:31 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:31.379799+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=080244a2-b400-43a4-9230-9312d964989a fwd="73.243.78.29" dyno=web.1 connect=1ms service=3ms status=200 bytes=853 protocol=https
+2021-03-11T02:11:39.111261+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:39 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:39.111828+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=2574c9f7-1dec-432b-be1f-1d6d3173e88e fwd="73.243.78.29" dyno=web.1 connect=0ms service=59ms status=200 bytes=781 protocol=https
+2021-03-11T02:11:40.837435+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:11:40 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:11:40.838064+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=b58eae6f-3fd8-4040-a06a-5ff78efb1260 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:12:01.867870+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:12:01 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:12:01.868545+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=57f16b71-fd5c-4c1f-a373-2a0f9790f5fd fwd="73.243.78.29" dyno=web.1 connect=2ms service=24ms status=200 bytes=781 protocol=https
+2021-03-11T02:12:04.106890+00:00 app[web.1]: 10.11.215.82 - - [11/Mar/2021:02:12:04 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:12:04.107578+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=41301cd3-152a-4141-824b-e02a6e2575ca fwd="73.243.78.29" dyno=web.1 connect=1ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:13:30.667966+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=f540a291-3817-4f80-b816-8b458362ce35 fwd="73.243.78.29" dyno=web.1 connect=1ms service=22ms status=200 bytes=781 protocol=https
+2021-03-11T02:13:30.668497+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:13:30 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:13:34.435279+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=96c07aa4-97fa-4daf-96bb-dc92fb355da9 fwd="73.243.78.29" dyno=web.1 connect=1ms service=3ms status=200 bytes=853 protocol=https
+2021-03-11T02:13:34.435874+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:13:34 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:13:51.386404+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=494a35c0-8b70-45db-94cd-02a2746bb162 fwd="73.243.78.29" dyno=web.1 connect=1ms service=3ms status=200 bytes=853 protocol=https
+2021-03-11T02:13:51.387224+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:13:51 +0000] "GET / HTTP/1.1" 200 692 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:14:34.748881+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=97e2625c-e2af-4621-ac1d-c211a5564ee3 fwd="73.243.78.29" dyno=web.1 connect=1ms service=4ms status=200 bytes=853 protocol=https
+2021-03-11T02:14:34.749692+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:14:34 +0000] "GET / HTTP/1.1" 200 692 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:15:24.403550+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=2862bf57-a359-4d59-a1b2-deaef9bf30d9 fwd="73.243.78.29" dyno=web.1 connect=1ms service=21ms status=200 bytes=781 protocol=https
+2021-03-11T02:15:24.404319+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:15:24 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:15:26.273311+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=77725205-be98-4a4a-82d2-2e0fb853a131 fwd="73.243.78.29" dyno=web.1 connect=1ms service=3ms status=200 bytes=853 protocol=https
+2021-03-11T02:15:26.273615+00:00 app[web.1]: 10.5.241.183 - - [11/Mar/2021:02:15:26 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:20.288060+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=9a5139c8-2a3d-4be4-a228-17910b27d335 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:19:20.289322+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:20 +0000] "GET / HTTP/1.1" 200 692 "https://dashboard.heroku.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:20.442685+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=spam-detect42.herokuapp.com request_id=7f655054-5733-4940-934b-cf8c39e59200 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=404 bytes=385 protocol=https
+2021-03-11T02:19:20.444037+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:20 +0000] "GET /favicon.ico HTTP/1.1" 404 232 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:24.028247+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:24 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:24.028298+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=4b7a76e2-c03f-442b-8a6c-fc54868d7d81 fwd="73.243.78.29" dyno=web.1 connect=1ms service=30ms status=200 bytes=781 protocol=https
+2021-03-11T02:19:25.656977+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=075a8ff2-8ae6-4c90-9551-97cc1c605b69 fwd="73.243.78.29" dyno=web.1 connect=1ms service=4ms status=200 bytes=853 protocol=https
+2021-03-11T02:19:25.658324+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:25 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:32.011692+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=159ad057-e09a-4ff7-86ea-41ca553a15e8 fwd="73.243.78.29" dyno=web.1 connect=0ms service=34ms status=200 bytes=781 protocol=https
+2021-03-11T02:19:32.013107+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:32 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:19:33.874608+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=e195b195-bb20-4e56-908a-fdd77cb35a84 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:19:33.875879+00:00 app[web.1]: 10.150.246.196 - - [11/Mar/2021:02:19:33 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:20:42.799802+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=80bd6229-7af6-4107-9221-5456ffc65ab6 fwd="73.243.78.29" dyno=web.1 connect=1ms service=27ms status=200 bytes=781 protocol=https
+2021-03-11T02:20:42.800101+00:00 app[web.1]: 10.35.176.80 - - [11/Mar/2021:02:20:42 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:21:04.293087+00:00 app[web.1]: 10.35.176.80 - - [11/Mar/2021:02:21:04 +0000] "GET / HTTP/1.1" 200 692 "https://spam-detect42.herokuapp.com/predict" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:21:04.296986+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=59bbdd37-cedb-4006-8be0-2ef8cbfba47f fwd="73.243.78.29" dyno=web.1 connect=3ms service=6ms status=200 bytes=853 protocol=https
+2021-03-11T02:21:07.706272+00:00 app[web.1]: 10.35.176.80 - - [11/Mar/2021:02:21:07 +0000] "POST /predict HTTP/1.1" 200 620 "https://spam-detect42.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
+2021-03-11T02:21:07.712157+00:00 heroku[router]: at=info method=POST path="/predict" host=spam-detect42.herokuapp.com request_id=a451c043-9bf8-4b31-9ed3-db172680a8bd fwd="73.243.78.29" dyno=web.1 connect=1ms service=29ms status=200 bytes=781 protocol=https
+2021-03-11T02:42:13.535514+00:00 heroku[router]: at=info method=GET path="/" host=spam-detect42.herokuapp.com request_id=116c4184-6e11-4823-9c03-e0b7551ce906 fwd="73.243.78.29" dyno=web.1 connect=0ms service=2ms status=200 bytes=853 protocol=https
+2021-03-11T02:42:13.538499+00:00 app[web.1]: 10.30.93.74 - - [11/Mar/2021:02:42:13 +0000] "GET / HTTP/1.1" 200 692 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36"
