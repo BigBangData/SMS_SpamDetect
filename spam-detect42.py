@@ -34,12 +34,11 @@ def predict_fun():
         try:
             X_test_processed = dp.transform_newdata(new_data)
             y_pred = XGboost_mod1.predict(X_test_processed)
-		except Exception as e:
-			raise e
+        except Exception as e:
+            raise e
 
     return render_template('result.html', 
                             prediction = y_pred[0])   
 
 if __name__ == '__main__':
-	app.run(debug=True)
-	
+    app.run(debug=True)
