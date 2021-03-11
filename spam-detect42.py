@@ -34,8 +34,8 @@ def predict_fun():
         try:
             X_test_processed = dp.transform_newdata(new_data)
             y_pred = XGboost_mod1.predict(X_test_processed)
-        except:
-            y_pred = np.array([2])
+		except Exception as e:
+			raise e
 
     return render_template('result.html', 
                             prediction = y_pred[0])   
