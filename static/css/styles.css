@@ -12,40 +12,38 @@ body{
 }
 
 header{
-	background:#03A9F4;#35434a;
+	background:#678cb4;
 	border-bottom:#448AFF 3px solid;
-	height:120px;
+	height:100px;
 	width:100%;
 	padding-top:30px;
-
+	margin: auto;
 }
 
 .main-header{
 			text-align:center;
-			background-color: blue;
-			height:100px;
+			background-color: #2d61b5;
+			height:60px;
 			width:100%;
 			margin:0px;
-		}
-#brandname{
-	float:left;
-	font-size:30px;
-	color: #fff;
-	margin: 10px;
 }
 
 header h2{
-	text-align:center;
-	color:#fff;
-
+	text-align:left;
+	color:#CEE8E9;
+	margin: 5px;
 }
 
+header h3{
+	text-align:left;
+	color:#2D3F40;
+	margin: 5px;
+}
 
-.btn-info {background-color: #2196F3;
+.btn-info {background-color: #CEE8E9;
 	height:40px;
-	width:100px;} /* Blue */
-.btn-info:hover {background: #0b7dda;}
-
+	width:100px;}
+.btn-info:hover {background: #ed517a;}
 
 .resultss{
 	border-radius: 15px 50px;

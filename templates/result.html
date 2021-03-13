@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Results</title>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
 </head>
 <body>
 	<header>
 		<div class="container">
-		<div id="brandname">
-			Machine Learning App with Flask
+			<h2>Spam Detector For SMS Messages</h2>
+			<h3>A Machine Learning App with Flask</h3>
 		</div>
-		<h2>Spam Detector For SMS Messages</h2>	
-	</div>
 	</header>
-	<!--<p style="color:blue;font-size:20;text-align: center;"><b>Results for Comment</b></p>> -->
 	<div class="results">
-	{% if prediction == 2%}	
-	<h2 style="color:black;">I have no idea. Really.</h2>	
-	{% elif prediction == 1%}
+	{% if prediction == 1%}
 	<h2 style="color:red;">SPAM!</h2>
 	{% elif prediction == 0%}
 	<h2 style="color:blue;">That's a legitimate message.</h2>
@@ -25,11 +20,10 @@
 	</div>
 </body>
 </html>
-
 <footer>
 	<div>
 		<ul>
-			<h3><center><a href="/">Go To Home Page</a></center></h3>
+			<h3><a href="/">Try Again?</a></h3>
 		</ul>
 	</div>
 </footer>
