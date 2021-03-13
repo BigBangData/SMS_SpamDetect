@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import time
 import joblib 
 import numpy as np
 
@@ -25,21 +24,24 @@ def predict_fun():
 
     if request.method == 'POST': 
 
-        message = request.form['message']
-
+        msg = request.form['message']
+        txt = np.array([msg])
+       
         try:
-            new_data = np.array([message])
-        except:
-            new_data = [message]
-        try:
-            X_test_processed = dp.transform_newdata(new_data)
+            (X_test_counter
+            , X_test_bot
+            , X_test_tfidf
+            , X_test_svd
+            , test_mean_spam_sims
+            , X_test_processed
+            ) = dp.transform_newdata(txt)
             y_pred = XGboost_mod1.predict(X_test_processed)
         except Exception as e:
             raise e
 
     return render_template('result.html', 
-                            prediction = y_pred[0])   
-
-if __name__ == '__main__':
+                            prediction = y_pred[0],
+                            counter =  dict(X_test_counter[0]))
+if __name__=='__main__':
     app.run(debug=True)
-	#app.run(debug=True, host='0.0.0.0', port=80)
+    #app.run(debug=True, host='0.0.0.0', port=80)

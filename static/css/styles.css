@@ -1,6 +1,6 @@
   
 body{
-	font:15px/1.5 Arial, Helvetica,sans-serif;
+	font:14px/1.5 Arial, Helvetica, sans-serif;
 	padding: 0px;
 	background-color:#f4f3f3;
 }
@@ -45,10 +45,10 @@ header h3{
 	width:100px;}
 .btn-info:hover {background: #ed517a;}
 
-.resultss{
+.results{
 	border-radius: 15px 50px;
-    background: #345fe4;
-    padding: 20px; 
-    width: 200px;
-    height: 150px;
+    background: #f0e8d3;
+    padding: 60px; 
+    width: 600px;
+    height: 200px;
 }

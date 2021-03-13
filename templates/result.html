@@ -16,7 +16,14 @@
 	<h2 style="color:red;">SPAM!</h2>
 	{% elif prediction == 0%}
 	<h2 style="color:blue;">That's a legitimate message.</h2>
+	<p><b>STEP 1:</b> the app generates an <b>upto trigram counter</b>. 
+		After some pre-processing steps such as lower casing, removing stop words and punctuation, 
+		replacing numbers, urls, and so forth, it produces a list of tokens ("words") and their counts.
+		It does so for successive tokens upto three tokens at a time. This is the list:</p>
 	{% endif %}
+    {% for key, value in counter.items() %}
+		  {{key}}, {{value}}
+	{% endfor %}
 	</div>
 </body>
 </html>

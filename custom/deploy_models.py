@@ -67,11 +67,6 @@ class TruncatedSVD(TransformerMixin, BaseEstimator):
 
 # create deployment dir
 dep_dir = os.path.join("data","5_deployment")
-
-try:
-    os.stat(dep_dir)
-except:
-    os.mkdir(dep_dir)
     
 # load transformers and model
 X_train_transformer_PATH = os.path.join(dep_dir, "X_train_transformer.joblib")
@@ -94,29 +89,45 @@ with open(X_train_svd_spam_PATH, 'rb') as f:
 def transform_newdata(new_data):
     
     # preprocess pipeline
-    pipe = Pipeline([('counter', cp.DocumentToNgramCounterTransformer(n_grams=3)),
-                     ('bot', cp.WordCounterToVectorTransformer(vocabulary_size=2000)),
-                     ('tfidf', TfidfTransformer(sublinear_tf=True))])
+    pipe = Pipeline([
+        ('counter', cp.DocumentToNgramCounterTransformer(n_grams=3)),
+        ('bot', cp.WordCounterToVectorTransformer(vocabulary_size=2000)),
+        ('tfidf', TfidfTransformer(sublinear_tf=True))
+    ])
 
     # counter
     X_test_counter = pipe['counter'].fit_transform(new_data) 
+    
     # BoT
     X_test_bot = X_train_transformer.transform(X_test_counter)
+    
     # Tfidf
     X_test_tfidf = X_train_fit.transform(X_test_bot)
+    
     # SVD
     sigma_inverse = 1 / X_train_svd_transformer.sigma_
     U_transpose = X_train_svd_transformer.U_.T
     UT_TestTfidfT = (U_transpose @ X_test_tfidf.T)
     X_test_svd = (sigma_inverse.reshape(-1,1) * UT_TestTfidfT).T
+    
     # Cosine Similarities
-    test_similarities = cosine_similarity(sp.vstack((X_test_svd, X_train_svd_spam)))
+    test_similarities = cosine_similarity(sp.vstack((X_test_svd, 
+                                                     X_train_svd_spam)))
+    
     spam_cols = range(X_test_svd.shape[0], test_similarities.shape[0])
     test_mean_spam_sims = []
     for ix in range(X_test_svd.shape[0]):
         mean_spam_sim = np.mean(test_similarities[ix, spam_cols])
         test_mean_spam_sims.append(mean_spam_sim)
+        
     # stack
     X_test_processed = sp.hstack((csr_matrix(test_mean_spam_sims).T, X_test_svd))
     
-    return X_test_processed
+    return (
+        X_test_counter
+        , X_test_bot
+        , X_test_tfidf
+        , X_test_svd
+        , test_mean_spam_sims
+        , X_test_processed
+    )
