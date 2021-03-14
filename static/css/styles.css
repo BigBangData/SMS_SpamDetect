@@ -1,4 +1,4 @@
-  
+
 body{
 	font:14px/1.5 Arial, Helvetica, sans-serif;
 	padding: 0px;
@@ -12,11 +12,11 @@ body{
 }
 
 header{
-	background:#678cb4;
-	border-bottom:#448AFF 3px solid;
-	height:100px;
+	background:#c1eaf6;
+	border-bottom:#97d2e3 3px solid;
+	height:80px;
 	width:100%;
-	padding-top:30px;
+	padding-top:20px;
 	margin: auto;
 }
 
@@ -30,7 +30,7 @@ header{
 
 header h2{
 	text-align:left;
-	color:#CEE8E9;
+	color:#63a8d2;
 	margin: 5px;
 }
 
@@ -41,14 +41,30 @@ header h3{
 }
 
 .btn-info {background-color: #CEE8E9;
-	height:40px;
-	width:100px;}
-.btn-info:hover {background: #ed517a;}
+	height:30px;
+	width:150px;}
+.btn-info:hover {background: #ed7168;}
 
 .results{
 	border-radius: 15px 50px;
-    background: #f0e8d3;
-    padding: 60px; 
-    width: 600px;
-    height: 200px;
+    background: #f4f3f3;
+    padding: 30px;
+    width: auto;
+    height: auto;
+    font:	12px/1.5 monospace;
+  }
+
+.table thead th{
+	vertical-align:bottom;
+	border-bottom:1px solid #dee2e6;
+	font:12px/1.5 monospace
+}
+.table-striped tbody tr:nth-of-type(odd){
+	background-color:rgba(0,0,0,.05);
+	border:1px solid #dee2e6;
+	padding:.3rem;
+	font:12px/1.5 monospace
+}
+.table-hover tbody tr:hover{
+	background-color:rgba(0,0,0,.075)
 }

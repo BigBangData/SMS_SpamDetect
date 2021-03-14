@@ -2,21 +2,23 @@
 <html>
 <head>
 	<title>Home</title>
-	<link rel="stylesheet" type="text/css" href="../static/css/styles.css">	
+	<link rel="stylesheet" type="text/css" href="../static/css/styles.css">
 </head>
 <body>
 	<header>
 	<div class="container">
 		<h2>Spam Detector For SMS Messages</h2>
-		<h3>A Machine Learning App with Flask</h3>
+		<h3>A Machine Learning App That Tries to Explain All It Does</h3>
 	</div>
 	</header>
 	<div class="ml-container">
-		<form action="{{url_for('predict_fun')}}" method="POST">
-		<p>Enter A Message:</p>
-		<textarea name="message" rows="4" cols="50"></textarea>
-		<br/>
-		<input type="submit" class="btn-info" value="Predict!">
+		<form action="{{url_for('predict_spam')}}" method="POST">
+		<br><br><br><br>
+		<p><center>Please Write A Nice Message... Or Not:</center></p>
+		<center><textarea name="message" rows="6" cols="100"></textarea></center>
+		<br>
+		<center>Keep Calm And</center>
+		<center><input type="submit" class="btn-info" value="Predict Spam"></center>
 	</form>
 	</div>
 </body>

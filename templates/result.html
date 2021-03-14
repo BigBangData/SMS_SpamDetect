@@ -12,25 +12,108 @@
 		</div>
 	</header>
 	<div class="results">
-	{% if prediction == 1%}
-	<h2 style="color:red;">SPAM!</h2>
-	{% elif prediction == 0%}
-	<h2 style="color:blue;">That's a legitimate message.</h2>
-	<p><b>STEP 1:</b> the app generates an <b>upto trigram counter</b>. 
-		After some pre-processing steps such as lower casing, removing stop words and punctuation, 
-		replacing numbers, urls, and so forth, it produces a list of tokens ("words") and their counts.
-		It does so for successive tokens upto three tokens at a time. This is the list:</p>
-	{% endif %}
-    {% for key, value in counter.items() %}
-		  {{key}}, {{value}}
-	{% endfor %}
-	</div>
+		{% if prediction == 1%}
+			<h2 style="color:#e0392d;">That was not a nice message...</h2>
+		{% elif prediction == 0%}
+			<h2 style="color:#4349e8;">Thank you, that <i>was</i> a nice message.</h2>
+		{% endif %}
+  <!-- explanations -->
+	<p>
+		I'll now attempt to describe at a medium level all that happened behind the scenes to reach the conclusion above.
+		<br>
+		<h3>STEP 1:</h3>
+		First there are preprocessing steps which parse the text and create a "word counter" so to speak. The process lowers the
+		case of characters, expands contractions, escapes html content, removes punctuation, replaces urls,
+		numbers, and emojis with standard formats (i.e. 'URL'), removes extraneous characters (i.e. non-ASCII chars), tokenizes
+		(splits into meaningful chunks such as words),removes stop words (common words),	lemmatizes the tokens into canonical forms,
+		adds bigrams and trigrams (2-and-3-word sequences) to the list of tokens, and finally counts the frequencies of these tokens
+		in a given "document" (a new instance of text, such as the one submitted to the input box here).
+		This is the result of this first step in the new text provided to this app:
+		<br><br>
+		<table class="table table-striped">
+			 <thead>
+		 		 <tr>
+					 	<th>Token</th>
+						<th>Count</th>
+				</tr>
+			 </thead>
+			 <tbody>
+					{% for key, value in counter.items() %}
+					 	<tr>
+						 	<td>{{key}}</td>
+							<td>{{value}}</td>
+						</tr>
+					{% endfor %}
+			 </tbody>
+		</table>
+		<br><br>
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L203">Source Code</a>
+	</p>
+	<p>
+		<h3>STEP 2:</h3>
+		The next step after this "word counter" (an up-to-trigram counter) is to transform it into a numerical vector since machine-learning (ML) models mostly
+		take number matrices as input. There are many ways to represent text as numbers but one of the most basic ways is a
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">document-term frequency
+		matrix</a> where each row is a new document in a corpus (of documents) and each column is a term (a token), and cells contain term frequencies in the document.
+		<br><br>
+		At this point it's worth noticing that these same steps were performed in a corpus of labeled SMS messsages - that is, a series of messages that had been labelled
+		"spam" and "ham" (ham is a legitimate message) which were compiled by Tiago A. Almeida and José María Gómez Hidalgo. This famous benchmarking dataset is described
+		<a href="http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/">here</a> by the authors, and is freely available in the
+		<a href="https://archive.ics.uci.edu/ml/datasets/sms+spam+collection#">UCI Machine Learning Repository.</a>
+		<br><br>
+		The reason for bringing this all up is that the vocabulary of tokens in the document-term frequency matrix used to train the ML model for prediction has to be stored
+		and reused so that the same vocabulary, the same representation of tokens in the same order needs to be used during prediction with new data for the
+		ML model to be able to understand what to do (or rather, to do the same thing - ML models don't understand anything they're not actually "intelligent"). During training
+		I came up with a vocabulary of 2,000 tokens for the up-to-trigram counter which achieved the best trade-off of accuracy and speed. Those 2,000 up-to-trigram tokens were
+		the most common (after removing stop words which have a low signal since they're so commonplace) out of a huge number of possible tokens. There were 40,000 unigram tokens,
+		you do the math for how many bigrams and trigrams. The assumption is that the most frequent tokens are the most likely to re-appear in a new document - this is a big
+		assumption of course.
+		<br><br>
+		For previously unseen tokens in the new data the preprocessing pipeline counts the number of tokens that it hasn't seen and <i>that</i> becomes a signal for
+		prediction as well. For the matching tokens the pipeline adds the count into the document-term frequency vector (in this case, since there was only one message,
+		one document) in the respective token sequence or slot.
+		<br><br>
+		As you can imagine, most of the vector is empty with zero counts so the signal is very faint. This is common in natural language
+		processing and a problem that will be dealt with in the ensuing steps. Below are the first 42 tokens (out of 2,000) which were the most common in the training
+		data, and their new counts (in the text provided).
+		<br><br>
+		<table class="table table-striped">
+			 <thead>
+				 <tr>
+					 <th>Training Tokens ---> </tg>
+					 {% for token in vocabulary %}
+						 {% if loop.last %}
+						  <th> . . . . </th>
+						 {% else %}
+						 	<th>{{token}}</th>
+						 {% endif %}
+			 	 	 {% endfor %}
+				 </tr>
+			 </thead>
+			 <tbody>
+					 <tr>
+						 <td>New Token Counts ---> </td>
+						 {% for count in bot %}
+							 {% if loop.last %}
+							   <th> . . . . </th>
+							 {% else %}
+						 	   <td>{{count}}</td>
+							 {% endif %}
+						 {% endfor %}
+					 </tr>
+			 </tbody>
+		</table>
+		<br><br>
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/deploy_models.py#L89">Deployment Code</a>,
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
+	</p>
+</div>
 </body>
 </html>
 <footer>
 	<div>
 		<ul>
-			<h3><a href="/">Try Again?</a></h3>
+			<h3><a href="/">Try Again.</a></h3>
 		</ul>
 	</div>
 </footer>

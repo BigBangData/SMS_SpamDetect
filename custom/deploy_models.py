@@ -3,7 +3,7 @@ import re
 import os
 import sys
 import time
-import joblib 
+import joblib
 
 import numpy as np
 import pandas as pd
@@ -25,7 +25,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.model_selection import train_test_split 
+from sklearn.model_selection import train_test_split
 
 class TruncatedSVD(TransformerMixin, BaseEstimator):
     def __init__(self, n_components=800):
@@ -44,15 +44,15 @@ class TruncatedSVD(TransformerMixin, BaseEstimator):
         # conventions, so reverse its outputs.
         Sigma = Sigma[::-1]
         U, VT = svd_flip(U[:, ::-1], VT[::-1])
-        
+
         # Store:
         # eigenvalues (left singular values): terms
-        self.U_ = U 
+        self.U_ = U
         # eigenvectors (right singular values): documents
-        self.V_ = VT.T 
+        self.V_ = VT.T
         # singular values
         self.sigma_ = Sigma
-        
+
         # Calculate explained variance & explained variance ratio
         X_transformed = U * Sigma
         self.explained_variance_ = exp_var = np.var(X_transformed, axis=0)
@@ -67,7 +67,7 @@ class TruncatedSVD(TransformerMixin, BaseEstimator):
 
 # create deployment dir
 dep_dir = os.path.join("data","5_deployment")
-    
+
 # load transformers and model
 X_train_transformer_PATH = os.path.join(dep_dir, "X_train_transformer.joblib")
 with open(X_train_transformer_PATH, 'rb') as f:
@@ -75,19 +75,19 @@ with open(X_train_transformer_PATH, 'rb') as f:
 
 X_train_fit_PATH = os.path.join(dep_dir, "X_train_fit.joblib")
 with open(X_train_fit_PATH, 'rb') as f:
-    X_train_fit = joblib.load(f) 
+    X_train_fit = joblib.load(f)
 
 X_train_svd_transformer_PATH = os.path.join(dep_dir, "X_train_svd_transformer.joblib")
 with open(X_train_svd_transformer_PATH, 'rb') as f:
-    X_train_svd_transformer = joblib.load(f)   
+    X_train_svd_transformer = joblib.load(f)
 
 X_train_svd_spam_PATH = os.path.join(dep_dir, "X_train_svd_spam.joblib")
 with open(X_train_svd_spam_PATH, 'rb') as f:
     X_train_svd_spam = joblib.load(f)
-    
-    
+
+
 def transform_newdata(new_data):
-    
+
     # preprocess pipeline
     pipe = Pipeline([
         ('counter', cp.DocumentToNgramCounterTransformer(n_grams=3)),
@@ -96,36 +96,37 @@ def transform_newdata(new_data):
     ])
 
     # counter
-    X_test_counter = pipe['counter'].fit_transform(new_data) 
-    
+    X_test_counter = pipe['counter'].fit_transform(new_data)
+
     # BoT
     X_test_bot = X_train_transformer.transform(X_test_counter)
-    
+
     # Tfidf
     X_test_tfidf = X_train_fit.transform(X_test_bot)
-    
+
     # SVD
     sigma_inverse = 1 / X_train_svd_transformer.sigma_
     U_transpose = X_train_svd_transformer.U_.T
     UT_TestTfidfT = (U_transpose @ X_test_tfidf.T)
     X_test_svd = (sigma_inverse.reshape(-1,1) * UT_TestTfidfT).T
-    
+
     # Cosine Similarities
-    test_similarities = cosine_similarity(sp.vstack((X_test_svd, 
+    test_similarities = cosine_similarity(sp.vstack((X_test_svd,
                                                      X_train_svd_spam)))
-    
+
     spam_cols = range(X_test_svd.shape[0], test_similarities.shape[0])
     test_mean_spam_sims = []
     for ix in range(X_test_svd.shape[0]):
         mean_spam_sim = np.mean(test_similarities[ix, spam_cols])
         test_mean_spam_sims.append(mean_spam_sim)
-        
+
     # stack
     X_test_processed = sp.hstack((csr_matrix(test_mean_spam_sims).T, X_test_svd))
-    
+
     return (
         X_test_counter
-        , X_test_bot
+        , list(X_train_transformer.vocabulary_)[:42]
+        , X_test_bot.toarray()[:,1:43][0]
         , X_test_tfidf
         , X_test_svd
         , test_mean_spam_sims
