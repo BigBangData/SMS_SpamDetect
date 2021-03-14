@@ -28,24 +28,24 @@ def predict_spam():
         txt = np.array([msg])
 
         try:
-            (X_test_counter
-            , X_train_transformer_vocab
-            , X_test_bot_42
-            , X_test_tfidf
+            (counter
+            , vocabulary
+            , bot
+            , ziparrays
             , X_test_svd
             , test_mean_spam_sims
-            , X_test_processed
-            ) = dp.transform_newdata(txt)
+            , X_test_processed) = dp.transform_newdata(txt)
+
             y_pred = XGboost_mod1.predict(X_test_processed)
         except Exception as e:
             raise e
 
-    return render_template('result.html',
-                            prediction = y_pred[0],
-                            counter =  dict(X_test_counter[0]),
-                            vocabulary = X_train_transformer_vocab,
-                            bot = X_test_bot_42
-                            )
+    return render_template('result.html'
+                          , prediction = y_pred[0]
+                          , counter =  counter
+                          , vocabulary = vocabulary
+                          , bot = bot
+                          , ziparrays = ziparrays)
 if __name__=='__main__':
     #app.run(debug=True)
     app.run(debug=True, host='0.0.0.0', port=80)

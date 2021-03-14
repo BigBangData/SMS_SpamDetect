@@ -124,11 +124,13 @@ def transform_newdata(new_data):
     X_test_processed = sp.hstack((csr_matrix(test_mean_spam_sims).T, X_test_svd))
 
     return (
-        X_test_counter
-        , list(X_train_transformer.vocabulary_)[:42]
-        , X_test_bot.toarray()[:,1:43][0]
-        , X_test_tfidf
-        , X_test_svd
-        , test_mean_spam_sims
-        , X_test_processed
-    )
+            dict(X_test_counter[0])
+            , list(X_train_transformer.vocabulary_)[:42]
+            , X_test_bot.toarray()[:,1:43][0]
+            , zip(list(X_train_transformer.vocabulary_)[:42]
+                  , X_test_bot.toarray()[:,1:43][0]
+                  , X_test_tfidf.toarray()[:,1:43][0])
+            , X_test_svd
+            , test_mean_spam_sims
+            , X_test_processed
+            )

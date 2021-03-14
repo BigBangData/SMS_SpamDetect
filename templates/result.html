@@ -8,7 +8,7 @@
 	<header>
 		<div class="container">
 			<h2>Spam Detector For SMS Messages</h2>
-			<h3>A Machine Learning App with Flask</h3>
+		<h3>A Machine Learning App That Explains All It Does</h3>
 		</div>
 	</header>
 	<div class="results">
@@ -75,12 +75,12 @@
 		<br><br>
 		As you can imagine, most of the vector is empty with zero counts so the signal is very faint. This is common in natural language
 		processing and a problem that will be dealt with in the ensuing steps. Below are the first 42 tokens (out of 2,000) which were the most common in the training
-		data, and their new counts (in the text provided).
+		data, and their new counts, represented in document-term (row, col) format:
 		<br><br>
 		<table class="table table-striped">
 			 <thead>
 				 <tr>
-					 <th>Training Tokens ---> </tg>
+					 <th>Training Tokens -> </tg>
 					 {% for token in vocabulary %}
 						 {% if loop.last %}
 						  <th> . . . . </th>
@@ -92,10 +92,10 @@
 			 </thead>
 			 <tbody>
 					 <tr>
-						 <td>New Token Counts ---> </td>
+						 <td>New Token Counts -> </td>
 						 {% for count in bot %}
 							 {% if loop.last %}
-							   <th> . . . . </th>
+							   <td> . . . . </td>
 							 {% else %}
 						 	   <td>{{count}}</td>
 							 {% endif %}
@@ -107,6 +107,57 @@
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/deploy_models.py#L89">Deployment Code</a>,
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
 	</p>
+	<p>
+		<h3>STEP 3:</h3>
+		A simple count of token frequency isn't too informative - especially for short messages since counts are less likely to go over one. A better way to leverage the content of a corpus of messages
+		such as the one used for training is to also take into account the number of times a document with that term occurs in the entire corpus, the <i>document frequency</i> of that term.
+		There are many Information Retrieval (IR) papers on the subject and it is deep.
+		<br><br>
+		A commonly used technique, <i>Term-Frequency Inverse-Document-Frequency (TF-IDF)</i> uses frequency as a proxy for the importance of a term, balancing the frequency of a term in a document (TF)
+		with its frequency in the corpus (IDF), generating a standardized score between 0 and 1, instead of a simple count for each token in a document. This has the effect of bringing out the level
+		of importance of rare terms which might still be significant because of their uniqueness. For an example of how this is done refer to
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">this notebook</a>.
+		<br><br>
+		A non-trivial aspect of this preprocessing pipeline is that it needs to remember the IDF values of the training data and apply a different calculation during preprocessing of the new data
+		to come up with TF-IDF values. This happens because we cannot calculate IDF values using a corpus of one document, for obvious reasons (in other words, there is no corpus).
+		Here's the same vectorized counter with TF-IDF values for comparison, represented in term-document format for ease of comparison:
+		<br><br>
+		<table class="table table-striped">
+			 <thead>
+				 <tr>
+					 <tr>
+						 	<th>Token</th>
+							<th>Count</th>
+							<th>Tfidf</th>
+					</tr>
+				</thead>
+ 			 <tbody>
+					{% for token, count, tfidf in ziparrays %}
+					{% if loop.last %}
+					<tr>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+					</tr>
+					{% else %}
+				  		<tr>
+						 		<td>{{token}}</td>
+								<td>{{count}}</td>
+								<td>{{tfidf}}</td>
+							</tr>
+					 {% endif %}
+					 {% endfor %}
+			 </tbody>
+		</table>
+		<br>
+		<li>
+			<b>Note:</b> If at first you don't see values, try using the tokens in the first column. Repeat the same token and notice what happens to the Tfidf value.
+		</li>
+		<br><br>
+		Source Code
+		<br><br>
+	</p>
+	IN PROGRESS...
 </div>
 </body>
 </html>
