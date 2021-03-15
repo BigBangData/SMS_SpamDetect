@@ -1,6 +1,6 @@
 
 body{
-	font:14px/1.5 Arial, Helvetica, sans-serif;
+	font:14px/1.5 Arial, Helvetica,  Sans-Serif;
 	padding: 0px;
 	background-color:#f4f3f3;
 }
@@ -9,6 +9,10 @@ body{
 	width:100%;
 	margin: auto;
 	overflow: hidden;
+}
+.ml-container{
+	font:16px/1.5 Arial, Helvetica, Sans-Serif;
+	color:#3c90b5
 }
 
 header{
@@ -30,7 +34,7 @@ header{
 
 header h2{
 	text-align:left;
-	color:#63a8d2;
+	color:#3c90b5;
 	margin: 5px;
 }
 
@@ -40,10 +44,16 @@ header h3{
 	margin: 5px;
 }
 
-.btn-info {background-color: #CEE8E9;
-	height:30px;
-	width:150px;}
-.btn-info:hover {background: #ed7168;}
+.btn-info {
+	background-color: #CEE8E9;
+	height:40px;
+	width:180px;
+	font: 15px/1.5 Sans-Serif;
+}
+.btn-info:hover {
+	background: #ff1c1c;
+	color: white;
+}
 
 .results{
 	border-radius: 15px 50px;
@@ -67,4 +77,10 @@ header h3{
 }
 .table-hover tbody tr:hover{
 	background-color:rgba(0,0,0,.075)
+}
+
+footer {
+  text-align: center;
+  padding: 3px;
+  background-color: #f4f3f3;
 }

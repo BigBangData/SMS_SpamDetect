@@ -130,7 +130,7 @@ def transform_newdata(new_data):
             , zip(list(X_train_transformer.vocabulary_)[:42]
                   , X_test_bot.toarray()[:,1:43][0]
                   , X_test_tfidf.toarray()[:,1:43][0])
-            , X_test_svd
+            , X_test_svd[0][:18]
             , test_mean_spam_sims
             , X_test_processed
             )

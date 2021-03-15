@@ -31,9 +31,9 @@ def predict_spam():
             (counter
             , vocabulary
             , bot
-            , ziparrays
-            , X_test_svd
-            , test_mean_spam_sims
+            , ziparrays # vocab, bot, and tfidf
+            , svd
+            , mean_spam_cosine_sim
             , X_test_processed) = dp.transform_newdata(txt)
 
             y_pred = XGboost_mod1.predict(X_test_processed)
@@ -45,7 +45,8 @@ def predict_spam():
                           , counter =  counter
                           , vocabulary = vocabulary
                           , bot = bot
-                          , ziparrays = ziparrays)
+                          , ziparrays = ziparrays
+                          , svd = svd)
 if __name__=='__main__':
     #app.run(debug=True)
     app.run(debug=True, host='0.0.0.0', port=80)
