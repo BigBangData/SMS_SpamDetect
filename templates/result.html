@@ -18,18 +18,38 @@
 			<h2 style="color:#4349e8;">Thank you, that <i>was</i> a nice message.</h2>
 		{% endif %}
 	<br><br>
-  <!-- explanations -->
 	<p>
 		<h3>When machine-learning algorithms predict results such as the above - how does this happen exactly?</h3>
-		Below I attempt to explain precisely how this happens: first at the 30,000ft bird's eye view, then in all the gory details.
+		Below I attempt to explain precisely how this happens: first at the 30,000-ft view, then in all the gory details.
 		<br><br>
-		<h2 style="color:#3c90b5;">FIRST: 30,000ft Bird's Eye View</h2>
+		<h2 style="color:#3c90b5;">FIRST: 30,000-ft View</h2>
 		<br>
+		Three main stages happen in this website:
+		<ol>
+				<li><b>Preprocessing:</b> casting the new message into a shape that can be consumed by a machine learning (ML) model.</li>
+				<li><b>Prediction:</b> using a pre-trained ML model to make a prediction using the preprocessed text.</li>
+				<li><b>Results:</b> displaying the prediction in some format.</li>
+		</ol>
+		Yet there were a lot of steps leading up to this:
+		<ul>
+			<li><b>Developing a preprocessing pipeline:</b> a time-consuming task using natural language processing (NLP) techniques.</li>
+			<li><b>Training Models:</b> an iterative process of having models learn from the data by making ever better predictions.</li>
+			<li><b>Model Evaluation:</b> using on held-out (unseen) data to find out which models perform best with new data.</li>
+			<li><b>Model Selection:</b> selecing a final model based on various considerations, including prediction speed.</li>
+			<li><b>Deployment:</b> creating a deployment script including this app, hosting it, and testing it.</li>
+		</ul>
+		<br><br>
+		TO DO:
+		<ol>
+			<li>High-level summary of entire dev process, acknowledgements, GitHub repos, etc.</li>
+			<li>High-level summary of preprocessing, prediction, and webapp behavior</li>
+		</ol>
+		<br><br>
 		IN PROGRESS...
 		<br><br>
 		<h2 style="color:#3c90b5;">THEN: All The Gory Details</h2>
 		<br>
-		<h3>STEP 1: The N-gram Counter</h3>
+		<h3>STEP 1: The Up-to-Trigram Counter</h3>
 		<br>
 		It all starts with a <b>preprocessing pipeline</b> to transform text into a numerical matrix that can be ingested by the ML algorithm.
 		The very first step is to parse the raw text and create a "word counter" so to speak. The process lowers the
@@ -60,8 +80,8 @@
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L203">Source Code</a>
 	</p>
 	<p>
-		<h3>STEP 2:</h3>
-		The next step after this "word counter" (an up-to-trigram counter) is to transform it into a numerical vector since machine-learning (ML) models mostly
+		<h3>STEP 2: The Document-Term Frequency Matrix</h3>
+		The next step after the token counter is to transform it into a numerical vector since machine-learning (ML) models mostly
 		take number matrices as input. There are many ways to represent text as numbers but one of the most basic ways is a
 		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">document-term frequency
 		matrix</a> where each row is a new document in a corpus (of documents) and each column is a term (a token), and cells contain term frequencies in the document.
@@ -118,7 +138,7 @@
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
 	</p>
 	<p>
-		<h3>STEP 3:</h3>
+		<h3>STEP 3: Term-Frequency Inverse-Document Frequency</h3>
 		A simple count of token frequency isn't too informative - especially for short messages since counts are less likely to go over one. A better way to leverage the content of a corpus of messages
 		such as the one used for training is to also take into account the number of times a document with that term occurs in the entire corpus, the <i>document frequency</i> of that term.
 		There are many Information Retrieval (IR) papers on the subject and it is deep.
@@ -168,7 +188,7 @@
 		<br><br>
 	</p>
 	<p>
-		<h3>STEP 4:</h3>
+		<h3>STEP 4: Singular Value Decomposition</h3>
 		While using a TF-IDF representation instead of simple counts boosts the training data's signal, we still have a 2,000-long sparse vector of mostly zeroes to contend with.
 		To solve this problem, a commonly used technique is to project this sparse matrix into what's called a <i>Latent Semantic</i> space using a mathematical technique called
 		<i>Singular Value Decomposition</i> or <i>SVD</i>. The technical details of this projection require a math background and are beyond the scope of this explanation but for
@@ -205,7 +225,7 @@
  				 <tr>
  					 <tr>
 						 <th>Component</th>
- 							<th>SVD</th>
+ 							<th>SVD Projection</th>
  					</tr>
  				</thead>
   			 <tbody>
@@ -224,6 +244,10 @@
  					{% endfor %}
  			 </tbody>
  		</table>
+		<br><br>
+	</p>
+	<p>
+		<h3>STEP 5: Mean Cosine Similarities</h3>
 		<br><br>
 	</p>
 </div>

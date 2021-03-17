@@ -54,27 +54,29 @@ header h3{
 	background: #ff1c1c;
 	color: white;
 }
-
 .results{
 	border-radius: 15px 50px;
     background: #f4f3f3;
     padding: 30px;
     width: auto;
     height: auto;
-    font:	12px/1.5 monospace;
+    font:	12px/1.5 Arial, Helvetica, Sans-Serif;
   }
 
 .table thead th{
+	background-color:#E3ECE3;
 	vertical-align:bottom;
 	border-bottom:1px solid #dee2e6;
 	font:12px/1.5 monospace
 }
-.table-striped tbody tr:nth-of-type(odd){
+.table-striped tbody tr{
 	background-color:rgba(0,0,0,.05);
 	border:1px solid #dee2e6;
 	padding:.3rem;
-	font:12px/1.5 monospace
+	text-align: right;
+	font:12px/1.5 monospace;
 }
+
 .table-hover tbody tr:hover{
 	background-color:rgba(0,0,0,.075)
 }
