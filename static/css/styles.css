@@ -46,9 +46,10 @@ header h3{
 
 .btn-info {
 	background-color: #CEE8E9;
-	height:40px;
+	height:50px;
 	width:180px;
-	font: 15px/1.5 Sans-Serif;
+	font: 20px/1.5 Sans-Serif;
+	font-weight:700;
 }
 .btn-info:hover {
 	background: #ff1c1c;
