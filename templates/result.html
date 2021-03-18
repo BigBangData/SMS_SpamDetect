@@ -46,8 +46,22 @@
 		</ol>
 		<br><br>
 		IN PROGRESS...
+		In this site preprocessing takes the form of a 5-step process...
 		<br><br>
 		<h2 style="color:#3c90b5;">THEN: All The Gory Details</h2>
+		<br>
+		<h2 style="color:#3c90b5;">Preprocessing Data for ML</h2>
+		Preprocessing unstructured text data is a lot different than preprocessing structured data such as tables with mostly numerical data or with
+		categorical data that is bucketed into relatively low-cardinality levels. The main differences or challenges are:
+		<ul>
+			<li><b>Creating features:</b> preprocessing creates features so in a way, the entire task is a feature-engineering one.</li>
+			<li><b>High dimensionality:</b> the number of features can easily explode and surpass the number of instances causing all sorts of problems.</li>
+			<li><b>Non-generalizability:</b> in most structured data problems we do not have to worry about the fact that the features themselves will be different in the test set (new data).</li>
+			<li><b>Preprocessing and modeling conflation:</b> the lines between preprocessing and modeling can get quite blurry at times and the distinction can feel artificial.</li>
+			<li><b>Approaches are evolving:</b> there is no consensus or "correct" way to do this, there are a myriad approaches and they're evolving rapidly with the rise of transformers and pre-trained models.</li>
+		</ul>
+		<br>
+	  Preprocessing was handled in five stages or steps, as mentioned in the 30,000-ft overview. Here we learn the details.
 		<br>
 		<h3>STEP 1: The Up-to-Trigram Counter</h3>
 		<br>
@@ -248,6 +262,12 @@
 	</p>
 	<p>
 		<h3>STEP 5: Mean Cosine Similarities</h3>
+		This is a feature engineering step that adds a single feature to our 800-feature dataset - the SVD projection of 2,000 TF-IDF up-to-trigrams down to 800 right-singular values.
+		While this extra feature might feel diluted among 800 others, it actually captures a lot of information and might overshadow all other features and even end up overfitting the
+		model, making it not generalize as well to new data. Of course I evaluated the generalization error using cross-validation during the training phase prior to deployment, however,
+		the dataset used for this spam detector is small and as such any held-out test sets are unlikely to include the variety of new data users could input into the form in this webiste.
+		<br>
+		Conine similarity is a type of distance metric....
 		<br><br>
 	</p>
 </div>
