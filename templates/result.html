@@ -3,22 +3,6 @@
 <head>
 	<title>Results</title>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
-		<style>
-		#Deets1 {
-		  width: 100%;
-			display: none;
-		  padding: 0px 0;
-		  text-align: center;
-		  margin-top: 0px;
-		}
-		#Deets2 {
-			width: 100%;
-			display: none;
-			padding: 0px 0;
-			text-align: center;
-			margin-top: 0px;
-		}
-		</style>
 </head>
 <body>
 	<header>
@@ -35,7 +19,7 @@
 		{% endif %}
 	<br><br>
 	<p>
-		<h3>When machine learning (ML) algorithms predict results such as the above - how does this happen exactly?</h3>
+		<h3>How did the machine learning algorithm arrive at this prediction from your text?</h3>
 		<br>
 		Let's follow an example. Say you'd written the following message:
 		<table class="table table-striped">
@@ -46,10 +30,9 @@
 			</body>
 		</table>
 		<br>
-		It was drawn (with modifications) from the SMS Collection by Tiago... (add atributions).
+		<h3>STEP 1: The Bag of Words</h3>
 		<br>
-		This is the corpus of documents (aka collection of messages) used to train the ML algorithm in this site.
-		Preprocessing steps like lower casing, removing punctuation, and replacing URLs are performed.
+		The first processing steps parse the text, lowering case, removing  punctuation, replacing URLs and so forth.
 		<br><br>
 		<button onclick="ShowDeets1()">See Details</button>
 		<br>
@@ -92,10 +75,10 @@
 		<br>
 		Then the text is split into chunks of text called tokens - you can think of the as words.
 		<br>
-		The most common words, known as stop words, are removed since they are so common that they provide little information about a message.
+		Very common words ("stop workds") are removed as they provide little signal, and words are
+		<a href="https://en.wikipedia.org/wiki/Lemmatisation">lemmatized</a> so as to arrive at simple, standard forms.
 		<br>
-		Then we lemmatize the tokens, which looks at the morphology of a word and changes it to its base form called a lemma. This is done with
-		carefully compiled dictionaries and is less drastic than stemming.
+		We then form two and three-long sequences of tokens to capture some of the order in the text - these are called Ngrams.
 		<br><br>
 		<button onclick="ShowDeets2()">See Details</button>
 		<br>
@@ -128,7 +111,8 @@
 	 </table>
 		</div>
 		<br>
- 	 	Finally, we count the frequency of each Ngram and create a "Bag-of-Words" representation:
+ 	 	Finally, we count repeated Ngrams, creating a "Bag-of-Words" representation:
+		<br><br>
 		<table class="table table-striped">
 			 <thead>
 		 		 <tr>
@@ -184,67 +168,13 @@
 			</body>
 		</table>
 		<br>
+		<button onclick="ShowDeets3()">See Your Bag-of-Words</button>
 		<br>
-		Peek behind the scenes to your text's Bag-of-Words:
-		<br>
-		<br>
-		OLD VERSION...
-		<h2 style="color:#3c90b5;">FIRST: 30,000-ft View</h2>
-		<br>
-		Three main stages happen in this website:
-		<ol>
-				<li><b>Preprocessing:</b> casting the new message into a shape that can be consumed by a machine learning (ML) model.</li>
-				<li><b>Prediction:</b> using a pre-trained ML model to make a prediction using the preprocessed text.</li>
-				<li><b>Results:</b> displaying the prediction in some format.</li>
-		</ol>
-		Yet there were a lot of steps leading up to this:
-		<ul>
-			<li><b>Developing a preprocessing pipeline:</b> a time-consuming task using natural language processing (NLP) techniques.</li>
-			<li><b>Training Models:</b> an iterative process of having models learn from the data by making ever better predictions.</li>
-			<li><b>Model Evaluation:</b> using on held-out (unseen) data to find out which models perform best with new data.</li>
-			<li><b>Model Selection:</b> selecing a final model based on various considerations, including prediction speed.</li>
-			<li><b>Deployment:</b> creating a deployment script including this app, hosting it, and testing it.</li>
-		</ul>
-		<br><br>
-		TO DO:
-		<ol>
-			<li>High-level summary of entire dev process, acknowledgements, GitHub repos, etc.</li>
-			<li>High-level summary of preprocessing, prediction, and webapp behavior</li>
-		</ol>
-		<br><br>
-		IN PROGRESS...
-		In this site preprocessing takes the form of a 5-step process...
-		<br><br>
-		<h2 style="color:#3c90b5;">THEN: All The Gory Details</h2>
-		<br>
-		<h2 style="color:#3c90b5;">Preprocessing Data for ML</h2>
-		Preprocessing unstructured text data is a lot different than preprocessing structured data such as tables with mostly numerical data or with
-		categorical data that is bucketed into relatively low-cardinality levels. The main differences or challenges are:
-		<ul>
-			<li><b>Creating features:</b> preprocessing creates features so in a way, the entire task is a feature-engineering one.</li>
-			<li><b>High dimensionality:</b> the number of features can easily explode and surpass the number of instances causing all sorts of problems.</li>
-			<li><b>Non-generalizability:</b> in most structured data problems we do not have to worry about the fact that the features themselves will be different in the test set (new data).</li>
-			<li><b>Preprocessing and modeling conflation:</b> the lines between preprocessing and modeling can get quite blurry at times and the distinction can feel artificial.</li>
-			<li><b>Approaches are evolving:</b> there is no consensus or "correct" way to do this, there are a myriad approaches and they're evolving rapidly with the rise of transformers and pre-trained models.</li>
-		</ul>
-		<br>
-	  Preprocessing was handled in five stages or steps, as mentioned in the 30,000-ft overview. Here we learn the details.
-		<br>
-		<h3>STEP 1: The Up-to-Trigram Counter</h3>
-		<br>
-		It all starts with a <b>preprocessing pipeline</b> to transform text into a numerical matrix that can be ingested by the ML algorithm.
-		The very first step is to parse the raw text and create a "word counter" so to speak. The process lowers the
-		case of characters, expands contractions, escapes html content, removes punctuation, replaces urls,
-		numbers, and emojis with standard formats (i.e. 'URL'), removes extraneous characters (i.e. non-ASCII chars), tokenizes
-		(splits into meaningful chunks such as words),removes stop words (common words),	lemmatizes the tokens into canonical forms,
-		adds bigrams and trigrams (2-and-3-word sequences) to the list of tokens, and finally counts the frequencies of these tokens
-		in a given "document" (a new instance of text, such as the one submitted to the input box here).
-		This is the result of this first step in the new text provided to this app:
-		<br><br>
+		<div id="Deets3">
 		<table class="table table-striped">
 			 <thead>
 		 		 <tr>
-					 	<th>Token</th>
+					 	<th>Ngram</th>
 						<th>Count</th>
 				</tr>
 			 </thead>
@@ -257,213 +187,50 @@
 					{% endfor %}
 			 </tbody>
 		</table>
+	</div>
 		<br><br>
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L203">Source Code</a>
 	</p>
 	<p>
+		<br>
 		<h3>STEP 2: The Document-Term Frequency Matrix</h3>
-		The next step after the token counter is to transform it into a numerical vector since machine-learning (ML) models mostly
-		take number matrices as input. There are many ways to represent text as numbers but one of the most basic ways is a
-		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">document-term frequency
-		matrix</a> where each row is a new document in a corpus (of documents) and each column is a term (a token), and cells contain term frequencies in the document.
 		<br><br>
-		At this point it's worth noticing that these same steps were performed in a corpus of labeled SMS messsages - that is, a series of messages that had been labelled
-		"spam" and "ham" (ham is a legitimate message) which were compiled by Tiago A. Almeida and José María Gómez Hidalgo. This famous benchmarking dataset is described
-		<a href="http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/">here</a> by the authors, and is freely available in the
-		<a href="https://archive.ics.uci.edu/ml/datasets/sms+spam+collection#">UCI Machine Learning Repository.</a>
-		<br><br>
-		The reason for bringing this all up is that the vocabulary of tokens in the document-term frequency matrix used to train the ML model for prediction has to be stored
-		and reused so that the same vocabulary, the same representation of tokens in the same order needs to be used during prediction with new data for the
-		ML model to be able to understand what to do (or rather, to do the same thing - ML models don't understand anything they're not actually "intelligent"). During training
-		I came up with a vocabulary of 2,000 tokens for the up-to-trigram counter which achieved the best trade-off of accuracy and speed. Those 2,000 up-to-trigram tokens were
-		the most common (after removing stop words which have a low signal since they're so commonplace) out of a huge number of possible tokens. There were 40,000 unigram tokens,
-		you do the math for how many bigrams and trigrams. The assumption is that the most frequent tokens are the most likely to re-appear in a new document - this is a big
-		assumption of course.
-		<br><br>
-		For previously unseen tokens in the new data the preprocessing pipeline counts the number of tokens that it hasn't seen and <i>that</i> becomes a signal for
-		prediction as well. For the matching tokens the pipeline adds the count into the document-term frequency vector (in this case, since there was only one message,
-		one document) in the respective token sequence or slot.
-		<br><br>
-		As you can imagine, most of the vector is empty with zero counts so the signal is very faint. This is common in natural language
-		processing and a problem that will be dealt with in the ensuing steps. Below are the first 42 tokens (out of 2,000) which were the most common in the training
-		data, and their new counts, represented in document-term (row, col) format:
-		<br><br>
-		<table class="table table-striped">
-			 <thead>
-				 <tr>
-					 <th>Training Tokens -> </tg>
-					 {% for token in vocabulary %}
-						 {% if loop.last %}
-						  <th> . . . . </th>
-						 {% else %}
-						 	<th>{{token}}</th>
-						 {% endif %}
-			 	 	 {% endfor %}
-				 </tr>
-			 </thead>
-			 <tbody>
-					 <tr>
-						 <td>New Token Counts -> </td>
-						 {% for count in bot %}
-							 {% if loop.last %}
-							   <td> . . . . </td>
-							 {% else %}
-						 	   <td>{{count}}</td>
-							 {% endif %}
-						 {% endfor %}
-					 </tr>
-			 </tbody>
-		</table>
-		<br><br>
-		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/deploy_models.py#L89">Deployment Code</a>,
-		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
-	</p>
-	<p>
-		<h3>STEP 3: Term-Frequency Inverse-Document Frequency</h3>
-		A simple count of token frequency isn't too informative - especially for short messages since counts are less likely to go over one. A better way to leverage the content of a corpus of messages
-		such as the one used for training is to also take into account the number of times a document with that term occurs in the entire corpus, the <i>document frequency</i> of that term.
-		There are many Information Retrieval (IR) papers on the subject and it is deep.
-		<br><br>
-		A commonly used technique, <i>Term-Frequency Inverse-Document-Frequency (TF-IDF)</i> uses frequency as a proxy for the importance of a term, balancing the frequency of a term in a document (TF)
-		with its frequency in the corpus (IDF), generating a standardized score between 0 and 1, instead of a simple count for each token in a document. This has the effect of bringing out the level
-		of importance of rare terms which might still be significant because of their uniqueness. For an example of how this is done refer to
-		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">this notebook</a>.
-		<br><br>
-		A non-trivial aspect of this preprocessing pipeline is that it needs to remember the IDF values of the training data and apply a different calculation during preprocessing of the new data
-		to come up with TF-IDF values. This happens because we cannot calculate IDF values using a corpus of one document, for obvious reasons (in other words, there is no corpus).
-		The table below shows the first 42 counter values contrasted with their TF-IDF values, represented in term-document format where a row is a term and the new document is a column:
-		<br><br>
-		<table class="table table-striped">
-			 <thead>
-				 <tr>
-					 <tr>
-						 	<th>Token</th>
-							<th>Count</th>
-							<th>Tfidf</th>
-					</tr>
-				</thead>
- 			 <tbody>
-					{% for token, count, tfidf in ziparrays %}
-					{% if loop.last %}
-					<tr>
-						<td>...</td>
-						<td>...</td>
-						<td>...</td>
-					</tr>
-					{% else %}
-				  		<tr>
-						 		<td>{{token}}</td>
-								<td>{{count}}</td>
-								<td>{{tfidf}}</td>
-							</tr>
-					 {% endif %}
-					 {% endfor %}
-			 </tbody>
-		</table>
-		<br>
-		<li>
-			<b>Note:</b> If at first you don't see values, try using the tokens in the first column. Repeat the same token and notice what happens to the Tfidf value.
-		</li>
-		<br><br>
-		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L89">Source Code</a>
+		IN PROGESS...
 		<br><br>
 	</p>
-	<p>
-		<h3>STEP 4: Singular Value Decomposition</h3>
-		While using a TF-IDF representation instead of simple counts boosts the training data's signal, we still have a 2,000-long sparse vector of mostly zeroes to contend with.
-		To solve this problem, a commonly used technique is to project this sparse matrix into what's called a <i>Latent Semantic</i> space using a mathematical technique called
-		<i>Singular Value Decomposition</i> or <i>SVD</i>. The technical details of this projection require a math background and are beyond the scope of this explanation but for
-		the interested audience there are a wide variety of resources online that teach SVD. I recommend Prof. Steve Brunton's excellent
-		<a href="https://www.youtube.com/playlist?list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv">YouTube Series</a> and his
-		<a href="https://www.amazon.com/Data-Driven-Science-Engineering-Learning-Dynamical/dp/1108422098">Data-Driven Science and Engineering book</a>.
-		<br><br>
-		SVD is used for dimensionality reduction (data compression) and has a variety of applications. It does so by clever rotations and transformations of the data projecting
-		a large matrix into a smaller one that captures most of the variance (or signal) in the original matrix. I played around with various SVD implementations
-		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/06_DimensionalityReduction.ipynb">here</a> and
-		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/06b_DimensionalityReduction.ipynb">here</a> and ended up
-	 	adapting the <i>TruncatedSVD</i> class from Scikit-Learn's ML library
-		(<a href="https://github.com/scikit-learn/scikit-learn/blob/95119c13af77c76e150b753485c662b7c52a41a2/sklearn/decomposition/_truncated_svd.py#L25">original</a>,
-		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L30">adaptation</a>
-		) which implements a low-rank approximation SVD, meaning, we can define N components and "compress",
-		say, this 2,000-long vector (the new document) into an N-long vector. It turns out that an 800-component SVD had the best trade-off of signal capture and data compression
-		when I tested various values.
-		<br><br>
-		The reason I adapted the TruncatedSVD class is similar to the reason I kept the IDF values during the TF-IDF calculation. When we apply SVD to the original
-		training matrix it is projected into a semantic space where an SVD component, which is a column in this new matrix, represents a higher-level concept extracted from
-		the original terms in that training data. This is where the "black box" of ML begins. We know the mathematics, we know it works and can see the results as better
-		predictions, yet we cannot say with ease what the new SVD columns represent, what aspects they capture from the original terms. We can speculate that the first
-		component of the SVD (the most informative) captures the "essence of SPAM", such as having more numbers, URLs, html content, or being longer - but it is likely that
-		it is rather an odd mixture of terms that wouldn't necessarily be intuitive or interpretable.
-		<br><br>
-		The important part is that the training SVD needs to be leveraged during the prediction process - we wouldn't be able to project a single document into this same
-		latent semantic space without keeping matrices from the training data to be able to do so
-		 (<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L108">see deployment code</a>).
-		 Below are the first 17 SVD components of the 800-long vector, which proportionally correspond to about 42 terms in a 2,000-long vector yet capture a much greater
-		 information signal:
-		 <br><br>
-		 <table class="table table-striped">
- 			 <thead>
- 				 <tr>
- 					 <tr>
-						 <th>Component</th>
- 							<th>SVD Projection</th>
- 					</tr>
- 				</thead>
-  			 <tbody>
- 					{% for component in svd %}
-					{% if loop.last %}
-							<tr>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-					{% else %}
- 				  		<tr>
-								<td>{{loop.index}}</td>
- 								<td>{{component}}</td>
- 							</tr>
-					{% endif %}
- 					{% endfor %}
- 			 </tbody>
- 		</table>
-		<br><br>
-	</p>
-	<p>
-		<h3>STEP 5: Mean Cosine Similarities</h3>
-		This is a feature engineering step that adds a single feature to our 800-feature dataset - the SVD projection of 2,000 TF-IDF up-to-trigrams down to 800 right-singular values.
-		While this extra feature might feel diluted among 800 others, it actually captures a lot of information and might overshadow all other features and even end up overfitting the
-		model, making it not generalize as well to new data. Of course I evaluated the generalization error using cross-validation during the training phase prior to deployment, however,
-		the dataset used for this spam detector is small and as such any held-out test sets are unlikely to include the variety of new data users could input into the form in this webiste.
-		<br>
-		Conine similarity is a type of distance metric....
-		<br><br>
-	</p>
-</div>
-
-<script>
-function ShowDeets1() {
-  var x = document.getElementById("Deets1");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
-  }
-}
-function ShowDeets2() {
-	var y = document.getElementById("Deets2");
-  if (y.style.display === "block") {
-    y.style.display = "none";
-  } else {
-    y.style.display = "block";
-  }
-}
-</script>
-
+	<script>
+	function ShowDeets1() {
+	  var x = document.getElementById("Deets1");
+	  if (x.style.display === "block") {
+	    x.style.display = "none";
+	  } else {
+	    x.style.display = "block";
+	  }
+	}
+	function ShowDeets2() {
+		var y = document.getElementById("Deets2");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets3() {
+		var y = document.getElementById("Deets3");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	</script>
 </body>
 </html>
+
 <footer>
 	<div>
 		<ul>
-			<h3><a href="/">Try Again.</a></h3>
+			<h3><a href="/">Try Again!</a></h3>
 		</ul>
 	</div>
 </footer>
