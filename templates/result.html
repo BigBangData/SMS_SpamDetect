@@ -3,6 +3,22 @@
 <head>
 	<title>Results</title>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+		<style>
+		#Deets1 {
+		  width: 100%;
+			display: none;
+		  padding: 0px 0;
+		  text-align: center;
+		  margin-top: 0px;
+		}
+		#Deets2 {
+			width: 100%;
+			display: none;
+			padding: 0px 0;
+			text-align: center;
+			margin-top: 0px;
+		}
+		</style>
 </head>
 <body>
 	<header>
@@ -21,7 +37,7 @@
 	<p>
 		<h3>When machine learning (ML) algorithms predict results such as the above - how does this happen exactly?</h3>
 		<br>
-		Let's follow an example. Say you'd written (give it a try?) the following message:
+		Let's follow an example. Say you'd written the following message:
 		<table class="table table-striped">
 			<body>
 				<tr>
@@ -33,42 +49,46 @@
 		It was drawn (with modifications) from the SMS Collection by Tiago... (add atributions).
 		<br>
 		This is the corpus of documents (aka collection of messages) used to train the ML algorithm in this site.
+		Preprocessing steps like lower casing, removing punctuation, and replacing URLs are performed.
 		<br><br>
-		Here are some of the preprocessing steps that happen to the raw text:
-		<table class="table table-striped">
-			 <thead>
-		 		 <tr>
-					 	<th>Step</th>
-						<th>Result</th>
-				</tr>
-			 </thead>
-			 <tbody>
-					 	<tr>
-							<td>Expand Contractions</td>
-							<td>For a chance to win a å£250 cash TXT: ACTION to 80608. U will be sorry -visits @www.movietrivia.tv @8pm PDT!</td>
-						</tr>
-						<tr>
-							<td>Lower Case</td>
-							<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits @www.movietrivia.tv @8pm pdt!</td>
-						</tr>
-						<tr>
-							<td>Replace URLs</td>
-							<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits  URL  @8pm pdt!</td>
-						</tr>
-						<tr>
-							<td>Replace Numbers</td>
-							<td>for a chance to win a å£ NUM  cash txt: action to  NUM . u will not be sorry -visits  URL  @ NUM pm pdt!</td>
-						</tr>
-						<tr>
-							<td>Remove Punctuation</td>
-							<td>for a chance to win a å NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
-						</tr>
-						<tr>
-							<td>Replace Emojis</td>
-							<td>for a chance to win a  EMOJI  NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
-						</tr>
-			 </tbody>
-		</table>
+		<button onclick="ShowDeets1()">See Details</button>
+		<br>
+		<div id="Deets1">
+			<table class="table table-striped">
+				 <thead>
+			 		 <tr>
+						 	<th>Step</th>
+							<th>Result</th>
+					</tr>
+				 </thead>
+				 <tbody>
+						 	<tr>
+								<td>Expand Contractions</td>
+								<td>For a chance to win a å£250 cash TXT: ACTION to 80608. U will be sorry -visits @www.movietrivia.tv @8pm PDT!</td>
+							</tr>
+							<tr>
+								<td>Lower Case</td>
+								<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits @www.movietrivia.tv @8pm pdt!</td>
+							</tr>
+							<tr>
+								<td>Replace URLs</td>
+								<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits  URL  @8pm pdt!</td>
+							</tr>
+							<tr>
+								<td>Replace Numbers</td>
+								<td>for a chance to win a å£ NUM  cash txt: action to  NUM . u will not be sorry -visits  URL  @ NUM pm pdt!</td>
+							</tr>
+							<tr>
+								<td>Remove Punctuation</td>
+								<td>for a chance to win a å NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
+							</tr>
+							<tr>
+								<td>Replace Emojis</td>
+								<td>for a chance to win a  EMOJI  NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
+							</tr>
+				 </tbody>
+			</table>
+		</div>
 		<br>
 		Then the text is split into chunks of text called tokens - you can think of the as words.
 		<br>
@@ -76,6 +96,10 @@
 		<br>
 		Then we lemmatize the tokens, which looks at the morphology of a word and changes it to its base form called a lemma. This is done with
 		carefully compiled dictionaries and is less drastic than stemming.
+		<br><br>
+		<button onclick="ShowDeets2()">See Details</button>
+		<br>
+		<div id="Deets2">
 		<table class="table table-striped">
 			 <thead>
 		 		 <tr>
@@ -102,7 +126,8 @@
  				</tr>
 		 </tbody>
 	 </table>
-<br>
+		</div>
+		<br>
  	 	Finally, we count the frequency of each Ngram and create a "Bag-of-Words" representation:
 		<table class="table table-striped">
 			 <thead>
@@ -413,6 +438,26 @@
 		<br><br>
 	</p>
 </div>
+
+<script>
+function ShowDeets1() {
+  var x = document.getElementById("Deets1");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+function ShowDeets2() {
+	var y = document.getElementById("Deets2");
+  if (y.style.display === "block") {
+    y.style.display = "none";
+  } else {
+    y.style.display = "block";
+  }
+}
+</script>
+
 </body>
 </html>
 <footer>
