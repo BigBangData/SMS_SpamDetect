@@ -19,9 +19,151 @@
 		{% endif %}
 	<br><br>
 	<p>
-		<h3>When machine-learning algorithms predict results such as the above - how does this happen exactly?</h3>
-		Below I attempt to explain precisely how this happens: first at the 30,000-ft view, then in all the gory details.
+		<h3>When machine learning (ML) algorithms predict results such as the above - how does this happen exactly?</h3>
+		<br>
+		Let's follow an example. Say you'd written (give it a try?) the following message:
+		<table class="table table-striped">
+			<body>
+				<tr>
+					<td>For a chance to win a å£250 cash TXT: ACTION to 80608. U won't be sorry -visits @www.movietrivia.tv @8pm PDT!</td>
+				</tr>
+			</body>
+		</table>
+		<br>
+		It was drawn (with modifications) from the SMS Collection by Tiago... (add atributions).
+		<br>
+		This is the corpus of documents (aka collection of messages) used to train the ML algorithm in this site.
 		<br><br>
+		Here are some of the preprocessing steps that happen to the raw text:
+		<table class="table table-striped">
+			 <thead>
+		 		 <tr>
+					 	<th>Step</th>
+						<th>Result</th>
+				</tr>
+			 </thead>
+			 <tbody>
+					 	<tr>
+							<td>Expand Contractions</td>
+							<td>For a chance to win a å£250 cash TXT: ACTION to 80608. U will be sorry -visits @www.movietrivia.tv @8pm PDT!</td>
+						</tr>
+						<tr>
+							<td>Lower Case</td>
+							<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits @www.movietrivia.tv @8pm pdt!</td>
+						</tr>
+						<tr>
+							<td>Replace URLs</td>
+							<td>for a chance to win a å£250 cash txt: action to 80608. u will not be sorry -visits  URL  @8pm pdt!</td>
+						</tr>
+						<tr>
+							<td>Replace Numbers</td>
+							<td>for a chance to win a å£ NUM  cash txt: action to  NUM . u will not be sorry -visits  URL  @ NUM pm pdt!</td>
+						</tr>
+						<tr>
+							<td>Remove Punctuation</td>
+							<td>for a chance to win a å NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
+						</tr>
+						<tr>
+							<td>Replace Emojis</td>
+							<td>for a chance to win a  EMOJI  NUM cash txt action to NUM u will not be sorry visits URL NUM pm pdt</td>
+						</tr>
+			 </tbody>
+		</table>
+		<br>
+		Then the text is split into chunks of text called tokens - you can think of the as words.
+		<br>
+		The most common words, known as stop words, are removed since they are so common that they provide little information about a message.
+		<br>
+		Then we lemmatize the tokens, which looks at the morphology of a word and changes it to its base form called a lemma. This is done with
+		carefully compiled dictionaries and is less drastic than stemming.
+		<table class="table table-striped">
+			 <thead>
+		 		 <tr>
+					 	<th>Step</th>
+						<th>Result</th>
+				</tr>
+			 </thead>
+		<body>
+			 <tr>
+				 <td>Tokenize</td>
+				 <td>'for' 'a' 'chance' 'to' 'win' 'a' 'EMOJI' 'NUM' 'cash' 'txt' 'action' 'to' 'NUM' 'u' 'will' 'not' 'be' 'sorry' 'visits' 'URL' 'NUM' 'pm' 'pdt'</td>
+			 </tr>
+			 <tr>
+				 <td>Remove Stop Words</td>
+				 <td>'chance' 'win' 'EMOJI' 'NUM' 'cash' 'txt' 'action' 'NUM' 'u' 'not' 'sorry' 'visits' 'URL' 'NUM' 'pm' 'pdt'</td>
+				</tr>
+				<tr>
+ 				 <td>Lemmatize</td>
+ 				 <td>'chance' 'win' 'EMOJI' 'NUM' 'cash' 'txt' 'action' 'NUM' 'u' 'not' 'sorry' 'visit' 'URL' 'NUM' 'pm' 'pdt'</td>
+ 				</tr>
+				<tr>
+ 				 <td>Add Ngrams</td>
+ 				 <td>'chance' 'win' 'EMOJI' 'NUM' 'cash' ...'for_a' 'a_chance' 'chance_to' 'to_win' 'win_a' ... 'visits_URL_NUM' 'URL_NUM_pm' 'NUM_pm_pdt'</td>
+ 				</tr>
+		 </tbody>
+	 </table>
+<br>
+ 	 	Finally, we count the frequency of each Ngram and create a "Bag-of-Words" representation:
+		<table class="table table-striped">
+			 <thead>
+		 		 <tr>
+					 	<th>Ngram</th>
+						<th>Count</th>
+				</tr>
+			 </thead>
+		<body>
+				<tr>
+					<td>chance</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>to</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>win</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>EMOJI</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>NUM</td>
+					<td>3</td>
+				</tr>
+				<tr>
+					<td>cash</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>...</td>
+					<td>...</td>
+				</tr>
+				<tr>
+					<td>sorry_visits_URL</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>visits_URL_NUM</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>URL_NUM_pm</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>NUM_pm_pdt</td>
+					<td>1</td>
+				</tr>
+			</body>
+		</table>
+		<br>
+		<br>
+		Peek behind the scenes to your text's Bag-of-Words:
+		<br>
+		<br>
+		OLD VERSION...
 		<h2 style="color:#3c90b5;">FIRST: 30,000-ft View</h2>
 		<br>
 		Three main stages happen in this website:
