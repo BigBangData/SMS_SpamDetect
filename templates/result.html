@@ -15,11 +15,27 @@
 		{% if prediction == 1%}
 			<h2 style="color:#e0392d;">That was not a nice message...</h2>
 		{% elif prediction == 0%}
-			<h2 style="color:#4349e8;">Thank you, that <i>was</i> a nice message.</h2>
+			<h2 style="color:#3d7aba;">Thank you, that <i>was</i> a nice message.</h2>
 		{% endif %}
-	<br><br>
+	</div>
 	<p>
-		<h3>How did the machine learning algorithm arrive at this prediction from your text?</h3>
+		<h3>How did the machine learning algorithm arrive at this prediction from your text message?</h3>
+		<br>
+		At a high level, these are the main steps:
+		<br><br>
+		<center><img src="../static/img/Explanation1.PNG" alt="Explanation 1" width=95%></center>
+		<p style="font-size:9px" align="right">
+			Interior of a classroom, students bent at study, Yallourn, 1947.
+			<br>
+ 			Photo by <a href="https://unsplash.com/@museumsvictoria">Museums Victoria</a> in <a href="https://unsplash.com/">Unsplash</a>.
+		</p>
+		<br>
+		For context, this is the timeline and effort involved:
+		<ol>
+			<li>Developing preprocessing and ML models: several months</li>
+			<li>Creating the app and deploying it without frills: a couple days</li>
+			<li>Making the app pretty and explaining the process: a couple weeks</li>
+		</ol>
 		<br>
 		Let's follow an example. Say you'd written the following message:
 		<table class="table table-striped">
