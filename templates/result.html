@@ -21,38 +21,40 @@
 	<p>
 		<h3>How did the machine learning algorithm arrive at this prediction from your text message?</h3>
 		<br>
-		At a high level, these are the main steps:
+		At a high level, these are the main steps in this app:
 		<br><br>
 		<center><img src="../static/img/Explanation1.PNG" alt="Explanation 1" width=95%></center>
-		<p style="font-size:9px" align="right">
+		<p style="font-size:10px" align="center">
 			Interior of a classroom, students bent at study, Yallourn, 1947.
 			<br>
  			Photo by <a href="https://unsplash.com/@museumsvictoria">Museums Victoria</a> in <a href="https://unsplash.com/">Unsplash</a>.
 		</p>
 		<br>
-		For context, this is the timeline and effort involved:
-		<ol>
-			<li>Developing preprocessing and ML models: several months</li>
-			<li>Creating the app and deploying it without frills: a couple days</li>
-			<li>Making the app pretty and explaining the process: a couple weeks</li>
-		</ol>
+		<h2 style="color:#3c90b5;">Processing The Text</h2>
+		Most of the time is spent processing the text as this numeric array that the ML model can understand. Prediction happens quickly after that. Processing takes several steps:
+		<ul>
+			<li>Creating Bag of Words (BoW)</li>
+			<li>Tranforming the BoW into a Document-Term Frequency Matrix (DTM)</li>
+			<li>Changing the DTM into a Document-Term TF-IDF Matrix</li>
+			<li>Reducing Dimensions via Singular Value Decomposition</li>
+			<li>Computing Mean Spam Cosine Similarities</li>
+		</ul>
 		<br>
-		Let's follow an example. Say you'd written the following message:
-		<table class="table table-striped">
-			<body>
-				<tr>
-					<td>For a chance to win a å£250 cash TXT: ACTION to 80608. U won't be sorry -visits @www.movietrivia.tv @8pm PDT!</td>
-				</tr>
-			</body>
-		</table>
+		As a motivating example, let's follow this spam text taken from our collection (with some modifications):
+		<p style="font-family:monospace; text-align:center">
+			For a chance to win a å£250 cash TXT: ACTION to 80608. U won't be sorry -visits @www.movietrivia.tv @8pm PDT!
+		</p>
 		<br>
-		<h3>STEP 1: The Bag of Words</h3>
+		<h3>Creating a Bag of Words (BoW)</h3>
 		<br>
-		The first processing steps parse the text, lowering case, removing  punctuation, replacing URLs and so forth.
+		<b>Parsing:</b> we cleanup the text, that is: lower case, remove  punctuation, replace URLs and numbers, and so forth.
 		<br><br>
 		<button onclick="ShowDeets1()">See Details</button>
 		<br>
 		<div id="Deets1">
+		<br>
+		These are some of the steps performed, for a deeper look into all the preprocessing see the source code (link below).
+		<br><br>
 			<table class="table table-striped">
 				 <thead>
 			 		 <tr>
@@ -89,16 +91,19 @@
 			</table>
 		</div>
 		<br>
-		Then the text is split into chunks of text called tokens - you can think of the as words.
+		<b>Tokenizing:</b> we split the text into chunks (tokens), remove common words, lemmatize, and group into ngrams.
 		<br>
-		Very common words ("stop workds") are removed as they provide little signal, and words are
-		<a href="https://en.wikipedia.org/wiki/Lemmatisation">lemmatized</a> so as to arrive at simple, standard forms.
 		<br>
-		We then form two and three-long sequences of tokens to capture some of the order in the text - these are called Ngrams.
-		<br><br>
 		<button onclick="ShowDeets2()">See Details</button>
-		<br>
 		<div id="Deets2">
+		<br>
+		Very common words ("stop words") are removed as they provide little signal, and words are
+		<a href="https://en.wikipedia.org/wiki/Lemmatisation">lemmatized</a> so as to standardize some of the variety and try to capture more signal.
+		We then form two and three-long sequences of tokens (bigrams and trigrams) to capture some of the order in the text.
+		These steps attempt to capture some of the meaning behind a message. There are many other ways to do this, for example, with deep learning architectures
+		and <a href="https://en.wikipedia.org/wiki/Long_short-term_memory">LSTM (Long-Short-Term-Memory)</a> cells I could've capture more long-term connections
+		between tokens in a text, not just consecutive chunks.
+		<br><br>
 		<table class="table table-striped">
 			 <thead>
 		 		 <tr>
@@ -106,7 +111,7 @@
 						<th>Result</th>
 				</tr>
 			 </thead>
-		<body>
+			 <body>
 			 <tr>
 				 <td>Tokenize</td>
 				 <td>'for' 'a' 'chance' 'to' 'win' 'a' 'EMOJI' 'NUM' 'cash' 'txt' 'action' 'to' 'NUM' 'u' 'will' 'not' 'be' 'sorry' 'visits' 'URL' 'NUM' 'pm' 'pdt'</td>
@@ -123,11 +128,12 @@
  				 <td>Add Ngrams</td>
  				 <td>'chance' 'win' 'EMOJI' 'NUM' 'cash' ...'for_a' 'a_chance' 'chance_to' 'to_win' 'win_a' ... 'visits_URL_NUM' 'URL_NUM_pm' 'NUM_pm_pdt'</td>
  				</tr>
-		 </tbody>
-	 </table>
+		 	</tbody>
+	 	</table>
 		</div>
 		<br>
- 	 	Finally, we count repeated Ngrams, creating a "Bag-of-Words" representation:
+		<br>
+ 	 	<b>Counting:</b> finally, we count repeated tokens (ngrams), creating a so-called 'Bag-of-Words' representation. Here are top and bottom rows of this BoW expressed as a table:
 		<br><br>
 		<table class="table table-striped">
 			 <thead>
@@ -185,7 +191,7 @@
 		</table>
 		<br>
 		<button onclick="ShowDeets3()">See Your Bag-of-Words</button>
-		<br>
+		<br><br>
 		<div id="Deets3">
 		<table class="table table-striped">
 			 <thead>
@@ -209,10 +215,99 @@
 	</p>
 	<p>
 		<br>
-		<h3>STEP 2: The Document-Term Frequency Matrix</h3>
+		<h3>Tranforming the BoW into a Document-Term Frequency Matrix (DTM)</h3>
+		<br>
+		We need to transform the Bag-of-Words into a numerical vector since ML models mostly take numbers as input.
+		There are many ways to represent text as numbers but one of the most basic ways is a
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb">Document-Term Frequency Matrix</a>
+		where each row is a new document (new text in our case) in a corpus of documents (such as the SMS Collection the model was trained on) and each column is a term
+		(a token), and cells contain the term frequency in a document (i.e. the number of times a word is used in a text).
+		<br><br>
+		<center><img src="../static/img/Explanation2.PNG" alt="Explanation 2" width=50%></center>
+		<center><i>Simple DTM on a corpus of three documents</i></center>
+		<br><br>
+		So far processing a single text in this app is the same as the processing I applied when preparing many texts for the ML model.
+		From now on, because we're using a single text with new words and I trained on a fixed corpus of texts and words, the steps differ.
+		<br><br>
+		For example, the <b>vocabulary of tokens</b> in the SMS Spam Collection is different than the vocabulary of tokens provided to this app. The latter is much smaller,
+		yet it might contain new tokens. We need to <b>cast, or project</b> the new tokens into the same shape of the original DTM created during training: <b>same tokens,
+		in the same order</b>.If we didn't do this, the ML model would not understand what to do - or rather, it'd just predict nonsense since it doesn't actually
+		understand anything.
+		<br><br>
+		<center><img src="../static/img/Explanation3.PNG" alt="Explanation 3" width=50%></center>
+		<center><i>Projecting new document into training DTM</i></center>	
+		<br><br>
+		During training the original vocabulary size had ~40,000 unigram tokens, and would be much larger with bigrams and trigrams. I ended up selecting the most commonl
+		2,000 tokens as the ideal size for my training DTM, such that we achieve a balance between accuracy and speed. As you can imagine, for a single document (text),
+		the vector of counts is mostly zeroes and the signal is very faint. Below are the first 42 terms which were the most common in the training data, and their new
+		counts, represented in document-term (row, col) format:
+		<br><br>
+		<table class="table table-striped">
+			 <thead>
+				 <tr>
+					 <th>Training Tokens -> </tg>
+					 {% for token in vocabulary %}
+						 {% if loop.last %}
+						  <th> . . . . </th>
+						 {% else %}
+						 	<th>{{token}}</th>
+						 {% endif %}
+			 	 	 {% endfor %}
+				 </tr>
+			 </thead>
+			 <tbody>
+					 <tr>
+						 <td>New Token Counts -> </td>
+						 {% for count in bot %}
+							 {% if loop.last %}
+							   <td> . . . . </td>
+							 {% else %}
+						 	   <td>{{count}}</td>
+							 {% endif %}
+						 {% endfor %}
+					 </tr>
+			 </tbody>
+		</table>
+		<br><br>
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/deploy_models.py#L89">Deployment Code</a>,
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
+	</p>
+	</p>
+	<p>
+		<br>
+		<h3>Changing the DTM into a Document-Term TF-IDF Matrix</h3>
 		<br><br>
 		IN PROGESS...
 		<br><br>
+	</p>
+	<p>
+		<br>
+		<h3>Reducing Dimensions via Singular Value Decomposition</h3>
+		<br><br>
+		IN PROGESS...
+		<br><br>
+	</p>
+	<p>
+		<br>
+		<h3>Computing Mean Spam Cosine Similarities</h3>
+		<br><br>
+		IN PROGESS...
+		<br><br>
+	</p>
+	<p>
+	<br>
+	<h2 style="color:#3c90b5;">Feeding The Processed Text Into A Model</h2>
+	<br>
+	</p>
+	<p>
+	<br>
+	<h2 style="color:#3c90b5;">Making A Prediction</h2>
+	<br>
+	</p>
+	<p>
+	<br>
+	<h2 style="color:#3c90b5;">Rendering The Prediction</h2>
+	<br>
 	</p>
 	<script>
 	function ShowDeets1() {
@@ -242,7 +337,6 @@
 	</script>
 </body>
 </html>
-
 <footer>
 	<div>
 		<ul>

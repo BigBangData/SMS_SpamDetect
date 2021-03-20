@@ -11,26 +11,33 @@
 		<h3>A Machine Learning App That Explains It All</h3>
 	</div>
 	</header>
-		An open source project that sheds light into what happens behind the scenes when machine learning algorithms are deployed.
 	<div class="ml-container">
-	<form action="{{url_for('predict_spam')}}" method="POST">
-		<br><br>
-		<p><center>Please write a nice message... or not:</center></p>
-		<center><textarea name="message" rows="6" cols="100"></textarea></center>
-		<br>
-		<center><img src="./static/img/KeepCalmAnd.PNG" alt="KEEP CALM AND CARRY ON" width=180></center>
-		<center><input type="submit" class="btn-info" value="PREDICT SPAM"></center>
-		<br>
-		<center>Prediction times may vary: a lot is happening behind the scenes.</center>
-	</form>
+		<form action="{{url_for('predict_spam')}}" method="POST">
+			<p>Please write a nice message... or not:</p>
+			<center><textarea name="message" rows="6" cols="100"></textarea></center>
+			<br>
+			<center><img src="./static/img/KeepCalmAnd.PNG" alt="KEEP CALM AND CARRY ON" width=180></center>
+			<center><input type="submit" class="btn-info" value="PREDICT SPAM"></center>
+			</form>
+		<p>Prediction times vary.</p>
 	</div>
-<footer>
 	<div>
-		<ul>
-			<br><br><br><br>
-			<p style="font-size:9px">By UK Government - Digital scan of original KEEP CALM AND CARRY ON poster owned by wartimeposters.co.uk. Public domain, via <a href="https://commons.wikimedia.org/wiki/File:Keep-calm-and-carry-on-scan.jpg">Wikimedia Commons</a>, Cropped from Orignial</p>
-		</ul>
+		<p>
+			<center>
+				For best accuracy, try SMS (Short Message Service) text messages between 2 and 400 characters in length.
+				<br>
+				The model was trained on an SMS Spam Collection which can be downloaded at the <a href="https://archive.ics.uci.edu/ml/datasets/sms+spam+collection#">UCI Machine Learning Repository.</a>
+				<br>
+				This labelled data is comprised of 747 spam and 4825 ham (legitimate) text messages.
+			</center>
+		</p>
+
 	</div>
-</footer>
+	<div class="footer">
+			<p>
+				By UK Government - Digital scan of original KEEP CALM AND CARRY ON poster owned by wartimeposters.co.uk. Public domain,
+				via <a href="https://commons.wikimedia.org/wiki/File:Keep-calm-and-carry-on-scan.jpg">Wikimedia Commons</a>, Cropped from Orignial
+			</p>
+		</div>
 </body>
 </html>
