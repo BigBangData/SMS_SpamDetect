@@ -235,12 +235,11 @@
 		understand anything.
 		<br><br>
 		<center><img src="../static/img/Explanation3.PNG" alt="Explanation 3" width=50%></center>
-		<center><i>Projecting new document into training DTM</i></center>	
+		<center><i>Projecting new document into training DTM</i></center>
 		<br><br>
-		During training the original vocabulary size had ~40,000 unigram tokens, and would be much larger with bigrams and trigrams. I ended up selecting the most commonl
-		2,000 tokens as the ideal size for my training DTM, such that we achieve a balance between accuracy and speed. As you can imagine, for a single document (text),
-		the vector of counts is mostly zeroes and the signal is very faint. Below are the first 42 terms which were the most common in the training data, and their new
-		counts, represented in document-term (row, col) format:
+		During training the original vocabulary size had ~40,000 unigram tokens, and would be much larger with bigrams and trigrams. After many tests I selected the most common
+		2,000 tokens as the ideal size for my training DTM, balancing a trade-off between accuracy and speed. Below are the first 42 tokens (of 2,000) which were the most common
+		in the training data, and their new counts.
 		<br><br>
 		<table class="table table-striped">
 			 <thead>
@@ -277,7 +276,10 @@
 		<br>
 		<h3>Changing the DTM into a Document-Term TF-IDF Matrix</h3>
 		<br><br>
-		IN PROGESS...
+		As you can imagine, for a single document, the vector of counts consists of mostly 0s since each text has a minuscule fraction of all tokens in all texts.
+		This means the information signal in a given vector is very faint. To boost the signal...
+		<br><br>
+		IN PROGRESS...
 		<br><br>
 	</p>
 	<p>
