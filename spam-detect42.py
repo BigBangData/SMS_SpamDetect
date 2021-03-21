@@ -3,7 +3,7 @@ import os
 import joblib
 import numpy as np
 
-import custom.deploy_models as dp
+import custom.deploy_models as deploy
 from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
@@ -20,12 +20,12 @@ def predict_spam():
                                      "XGboost_mod1.joblib")
 
     with open(XGboost_mod1_PATH, 'rb') as f:
-        XGboost_mod1 = joblib.load(f)
+        XGboost_model = joblib.load(f)
 
     if request.method == 'POST':
 
         msg = request.form['message']
-        txt = np.array([msg])
+        text = np.array([msg])
 
         try:
             (counter
@@ -34,8 +34,8 @@ def predict_spam():
             , ziparrays # vocab, bot, and tfidf
             , svd
             , cossim
-            , X_test_processed) = dp.transform_newdata(txt)
-            y_pred = XGboost_mod1.predict(X_test_processed)
+            , X_processed) = deploy.transform_newdata(text)
+            y_pred = XGboost_model.predict(X_processed)
         except Exception as e:
             raise e
 
