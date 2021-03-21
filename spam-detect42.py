@@ -33,9 +33,9 @@ def predict_spam():
             , bot
             , ziparrays # vocab, bot, and tfidf
             , svd
-            , mean_spam_cosine_sim
+            , cossim
             , X_test_processed) = dp.transform_newdata(txt)
-
+            # predict
             y_pred = XGboost_mod1.predict(X_test_processed)
         except Exception as e:
             raise e
@@ -46,7 +46,8 @@ def predict_spam():
                           , vocabulary = vocabulary
                           , bot = bot
                           , ziparrays = ziparrays
-                          , svd = svd)
+                          , svd = svd
+                          , cossim = cossim)
 if __name__=='__main__':
     #app.run(debug=True)
     app.run(debug=True, host='0.0.0.0', port=80)

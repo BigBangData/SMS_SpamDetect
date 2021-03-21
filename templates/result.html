@@ -307,7 +307,6 @@
 		<br><br>
 		<table class="table table-striped">
 			 <thead>
-				 <tr>
 					 <tr>
 						 	<th>Token</th>
 							<th>Count</th>
@@ -381,7 +380,6 @@
 		 <br><br>
 		 <table class="table table-striped">
  			 <thead>
- 				 <tr>
  					 <tr>
 						 <th>Component</th>
  							<th>SVD Projection</th>
@@ -411,35 +409,73 @@
 	<p>
 		<br>
 		<h3>Computing Mean Spam Cosine Similarities</h3>
-		<br><br>
-		Cosine similarity is the most common distance metric in natural language processing - it's been proven to be one of the most efficient ways to capture
-		the similarity between two documents. Put simply, it is the angle between two documents represented as vectors in an inner product space.
-		We can build an intuition for this in a 2D Cartesian coordinate system where one axis represents a term and the other another term.
-		The vectors below represent how many times the word "sea" and "love" happened on three different documents.
-		<br><br>
-		<center><img src="../static/img/Explanation5.PNG" alt="Explanation 5" width=33%></center>
-		<center><i>Vectors in a 2D Cartesian Cooordinate System</i></center>
 		<br>
-		The red vector to the left represents a document in which the word "love" happened twice but "sea" only once - this document has more love-ness than
-		sea-ness, so it angles toward the love axis in this coordinate system. The black vector on the other hand represents a document where "sea" happened
-		six times and "love" twice - it has a lot more sea-ness than love-ness and therefore the vector is closer to the sea axis despite having the same
-		love count. The green vector in the middle represents a middle ground between the two terms, thus the vector has a 45-degree angle.
+		<button onclick="ShowDeets6()">See Detailed Explanation</button
 		<br><br>
-		With other distance metrics (similarity is the opposite of distance, they're two sides of the same coin) such as the ubiquitous Euclidean distance
-		("as the crow flies"), the magnitude (length, or word count) of a vector is very important (Euclidean distance squares it).
-		Had I used it to compute the similarity between two documents, the fact that sea happened so many times on this black document compared to the red one
-		would put it much further away from the red one and these documents would be more dissimilar than they really are, given how they share these two words.
-		<br><br>
-		By only considering the angle between two vectors the cosine similarity gives preference to the word mix, not as much the counts (the angle is in part
-		determined by the magnitude, sure), and that is how the <i>cosine similarity captures more of the essence of a document</i>, and is the similarity
-		metric of choice for text analytics.
-		<br><br>
+		<div id="Deets6">
+			<br>
+			Cosine similarity is the most common distance metric in natural language processing - it's been proven to be one of the most efficient ways to capture
+			the similarity between documents. It is the cosine of the angle between documents represented as vectors in an
+			<a href="https://en.wikipedia.org/wiki/Inner_product_space">inner product space.</a> Put simply, if we represent two documents as numeric vectors (as
+			we did) we can compute how similar they are using the cosine of the angle between these documents in space. Since visualizing a multidimensional
+			space isn't possible, we can build an intuition for this in a 2D Cartesian coordinate system where one axis represents a term and the other another term.
+			We can plot documents with two terms as vectors in this plane. Say your corpus was "The Old Man and the Sea" and each document is a sentence in the book,
+			yet we're only interested in the words "love" and "sea" since our space is only in 2D. The three vectors below represent three documents containing different
+			counts of these words.
+			<br><br>
+			<center><img src="../static/img/Explanation5.PNG" alt="Explanation 5" width=33%></center>
+			<center><i>Documents represented as vectors in a 2D plane</i></center>
+			<br>
+			The red vector to the left represents a document in which the word "love" happened twice but "sea" only once - this document has more love than sea
+			so it angles toward the love axis. The black vector represents a document where "sea" happened six times and "love" twice - it has a lot more sea
+			than love so it's closer to the sea axis despite having the same love count. The green vector in the middle is a middle ground between the two terms,
+			thus the vector has a 45-degree angle. We can now compute the cosine of the angles between these vectors and compare how similar the documents are
+			by how close they are to each other.
+			<br><br>
+			With other distance metrics (similarity is the opposite of distance, they're two sides of the same coin) such as the ubiquitous Euclidean distance
+			("as the crow flies"), the magnitude (length, or word count) of a vector is very important (Euclidean distance squares it). Using Euclidean distance
+			for computing document similarity would disproportionately weight how many times sea is mentioned in the black document and put it further away from
+			the red document than it need be. By only considering the angle between two vectors the cosine similarity gives preference to the word mix, capturing
+			more of the essence of a document.
+		</div>
+		<br>
 		<li><b>How does this help a machine learning model distinguish spam from ham?</b></li>
-		If we compute the mean spam cosine similarity (the mean of the cosine similarities for spam messages) in the training corpus and use that as a feature
-		in our training data, that can be a potential predictor of how "spammy" a new message is. The hypothesis is that the mean spam cosine similarity would
-		be significantly different from the ham one so as to provide a signal - and this seems to be the case.
+		If we compute the mean cosine similarity between all documents in the training data (which has labels) and build a square
+		matrix of cosine similarities between all documents, we can go through each row of this matrix and compute the mean cosine similarity for each
+		document (spam or ham) of only the spam columns, creating a "mean spam cosine similarity" feature. The hypothesis is that ham messages will have
+		low similarities compared to spam messages, in other words, spam is more similar to spam than ham. This not only stands to reason but it stands
+		to visual scrutiny and further validation during model development. Below is the distribution of mean spam cosine similarities for ham and spam
+		messages in the training data.
 		<br><br>
-		TO DO: revise cosine similarity section - add mean cosine similarity and how the new document uses this feature.
+		<center><img src="../static/img/Explanation6.PNG" alt="Explanation 6" width=50%></center>
+		<center><i>Distribution of Ham v. Spam Mean Spam Cosine Similarities</i></center>
+		<br>
+		<button onclick="ShowDeets7()">See Your Mean Spam Cosine Similarity</button>
+		<br><br>
+		<div id="Deets7">
+		Notice how small these values are - yet spam is clearly separable from ham. This is only one of the (now 801) features used to predict whether a
+		text is ham or spam but it is probably the most powerful predictor. If your value is very close to zero or even negative, it is likely that the model
+		will interpret it to be indicative of a legitimate message, but even a value of 0.005 is within the range of possible spam values for this feature:
+		</thead>
+		<br><br>
+ 	 	<table class="table table-striped">
+ 		 	<thead>
+ 				 <tr>
+ 					 <th>Mean Spam Cosine Similarity</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				{% for sim in cossim %}
+ 						<tr>
+ 							<td>{{sim}}</td>
+ 						</tr>
+ 				{% endfor %}
+ 		 </tbody>
+ 		</table>
+		</div>
+	<br>
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/08_CosineSimilarity.ipynb">Cosine Similarity Notebook</a>,
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/e0afac56b5b0569c431b2607ef24b83f7ed67390/custom/deploy_models.py#L113">Deployment Code</a>
 	</p>
 	<p>
 	<br>
@@ -491,6 +527,22 @@
 	}
 	function ShowDeets5() {
 		var y = document.getElementById("Deets5");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets6() {
+		var y = document.getElementById("Deets6");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets7() {
+		var y = document.getElementById("Deets7");
 	  if (y.style.display === "block") {
 	    y.style.display = "none";
 	  } else {
