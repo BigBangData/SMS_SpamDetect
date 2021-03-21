@@ -35,7 +35,6 @@ def predict_spam():
             , svd
             , cossim
             , X_test_processed) = dp.transform_newdata(txt)
-            # predict
             y_pred = XGboost_mod1.predict(X_test_processed)
         except Exception as e:
             raise e

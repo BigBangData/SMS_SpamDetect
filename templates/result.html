@@ -476,11 +476,22 @@
 	<br>
 		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/08_CosineSimilarity.ipynb">Cosine Similarity Notebook</a>,
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/e0afac56b5b0569c431b2607ef24b83f7ed67390/custom/deploy_models.py#L113">Deployment Code</a>
+	<br>
 	</p>
 	<p>
 	<br>
 	<h2 style="color:#3c90b5; text-align:center">Feeding The Processed Text Into A Model</h2>
 	<br>
+	The final processed numeric array is an 801-long vector that consists of the mean spam consine similarity feature stacked onto the 800-long SVD of the 2,000-long
+	document-term matrix of TF-IDF scores. The entire processing step plus feeding this array into a pre-trained model and making a prediction is encapsulated by two
+	lines of code in the final deployment script - two lines of code that accomplish a lot under the hood. We've covered the first line, now we'll cover the second.
+	<br><br>
+	<center><img src="../static/img/Explanation7.PNG" alt="Explanation 7" width=33%></center>
+	<center><i>Preprocessing and predicting in
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/d689cba5386ede7d06257632c28989ccba1115c9/spam-detect42.py#L37">
+			two lines of code</a></i></center>
+	<br>
+
 	</p>
 	<p>
 	<br>
