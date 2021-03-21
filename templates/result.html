@@ -412,8 +412,34 @@
 		<br>
 		<h3>Computing Mean Spam Cosine Similarities</h3>
 		<br><br>
-		IN PROGESS...
+		Cosine similarity is the most common distance metric in natural language processing - it's been proven to be one of the most efficient ways to capture
+		the similarity between two documents. Put simply, it is the angle between two documents represented as vectors in an inner product space.
+		We can build an intuition for this in a 2D Cartesian coordinate system where one axis represents a term and the other another term.
+		The vectors below represent how many times the word "sea" and "love" happened on three different documents.
 		<br><br>
+		<center><img src="../static/img/Explanation5.PNG" alt="Explanation 5" width=33%></center>
+		<center><i>Vectors in a 2D Cartesian Cooordinate System</i></center>
+		<br>
+		The red vector to the left represents a document in which the word "love" happened twice but "sea" only once - this document has more love-ness than
+		sea-ness, so it angles toward the love axis in this coordinate system. The black vector on the other hand represents a document where "sea" happened
+		six times and "love" twice - it has a lot more sea-ness than love-ness and therefore the vector is closer to the sea axis despite having the same
+		love count. The green vector in the middle represents a middle ground between the two terms, thus the vector has a 45-degree angle.
+		<br><br>
+		With other distance metrics (similarity is the opposite of distance, they're two sides of the same coin) such as the ubiquitous Euclidean distance
+		("as the crow flies"), the magnitude (length, or word count) of a vector is very important (Euclidean distance squares it).
+		Had I used it to compute the similarity between two documents, the fact that sea happened so many times on this black document compared to the red one
+		would put it much further away from the red one and these documents would be more dissimilar than they really are, given how they share these two words.
+		<br><br>
+		By only considering the angle between two vectors the cosine similarity gives preference to the word mix, not as much the counts (the angle is in part
+		determined by the magnitude, sure), and that is how the <i>cosine similarity captures more of the essence of a document</i>, and is the similarity
+		metric of choice for text analytics.
+		<br><br>
+		<li><b>How does this help a machine learning model distinguish spam from ham?</b></li>
+		If we compute the mean spam cosine similarity (the mean of the cosine similarities for spam messages) in the training corpus and use that as a feature
+		in our training data, that can be a potential predictor of how "spammy" a new message is. The hypothesis is that the mean spam cosine similarity would
+		be significantly different from the ham one so as to provide a signal - and this seems to be the case.
+		<br><br>
+		TO DO: revise cosine similarity section - add mean cosine similarity and how the new document uses this feature.
 	</p>
 	<p>
 	<br>
