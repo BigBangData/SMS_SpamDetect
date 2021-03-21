@@ -27,15 +27,17 @@
 		<p style="font-size:10px" align="center">
 			Interior of a classroom, students bent at study, Yallourn, 1947.
 			<br>
- 			Photo by <a href="https://unsplash.com/@museumsvictoria">Museums Victoria</a> in <a href="https://unsplash.com/">Unsplash</a>.
+ 			Photo by <a href="https://unsplash.com/@museumsvictoria">Museums Victoria</a>
+			in <a href="https://unsplash.com/">Unsplash</a>.
 		</p>
 		<br>
-		<h2 style="color:#3c90b5;">Processing The Text</h2>
-		Most of the time is spent processing the text as this numeric array that the ML model can understand. Prediction happens quickly after that. Processing takes several steps:
+		<h2 style="color:#3c90b5; text-align:center">Processing The Text</h2>
+		Most of the time is spent processing the text as this numeric array that the ML model can understand.
+		Prediction happens quickly after that. Processing takes several steps:
 		<ul>
 			<li>Creating Bag of Words (BoW)</li>
 			<li>Tranforming the BoW into a Document-Term Frequency Matrix (DTM)</li>
-			<li>Changing the DTM into a Document-Term TF-IDF Matrix</li>
+			<li>Converting the DTM into a Document-Term TF-IDF Matrix</li>
 			<li>Reducing Dimensions via Singular Value Decomposition</li>
 			<li>Computing Mean Spam Cosine Similarities</li>
 		</ul>
@@ -133,7 +135,8 @@
 		</div>
 		<br>
 		<br>
- 	 	<b>Counting:</b> finally, we count repeated tokens (ngrams), creating a so-called 'Bag-of-Words' representation. Here are top and bottom rows of this BoW expressed as a table:
+ 	 	<b>Counting:</b> finally, we count repeated tokens (ngrams), creating a so-called 'Bag-of-Words' representation.
+											Here are top and bottom rows of this BoW expressed as a table:
 		<br><br>
 		<table class="table table-striped">
 			 <thead>
@@ -269,25 +272,141 @@
 		</table>
 		<br><br>
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/deploy_models.py#L89">Deployment Code</a>,
-		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">WordCounterToVectorTransformer Code</a>
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/74ca298ef7cffccca1350f852766b2401d7a4e91/custom/clean_preprocess.py#L278">
+			WordCounterToVectorTransformer Code</a>
 	</p>
 	</p>
 	<p>
 		<br>
-		<h3>Changing the DTM into a Document-Term TF-IDF Matrix</h3>
+		<h3>Converting the DTM into a Document-Term TF-IDF Matrix</h3>
+		<br>
+		For a single document, the vector of counts consists of mostly 0s since each text has a minuscule fraction of all tokens in all texts.
+		This means the information signal in a given vector is very faint. To boost the signal we can leverage more of the information contained
+		in the training data. So far we've counted the <b>TF</b> or <b>Term Frequency</b> of a token within a single document, but we can also
+		count the <b>DF</b> or <b>Document Frequency</b> of documents within the entire corpus that have that token.
 		<br><br>
-		As you can imagine, for a single document, the vector of counts consists of mostly 0s since each text has a minuscule fraction of all tokens in all texts.
-		This means the information signal in a given vector is very faint. To boost the signal...
+		We can then pit the TF against the DF by using the inverse of the DF (for details see
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/Extra_Document_Term_Matrices.ipynb")>this notebook</a>)
+		so as to balance out the importance of tokens in a document vs the corpus. Think of it like "removing stop words" from the corpus, if a
+		term is very frequent in the corpus, it is not as informative to distinguish documents - TF*IDF boosts the importance of rare terms. (As a side
+		note, the fact I'm doing this calculation after selecting the most common 2,000 terms might have defeated its purpose a bit.)
 		<br><br>
-		IN PROGRESS...
+		A neat property of the TF-IDF calculation is that the resulting values or scores are normalized between 0 and 1. Here's the result given our simple
+		corpus. Notice how the TF-IDF scores capture better the meaning of the second document: since "love" and "you" are common in the corpus, their scores
+		are a bit lower than the scores for "do" and "not".
+		<br><br>
+		<center><img src="../static/img/Explanation4.PNG" alt="Explanation 4" width=65%></center>
+		<center><i>Conversion from counts to TF IDF scores</i></center>
+		<br>
+		<button onclick="ShowDeets4()">See Your DTM</button>
+		<br><br>
+		<div id="Deets4">
+		A non-trivial aspect of this step in the processing pipeline is that it needs to remember the IDF values of the training data and apply a different
+		calculation when processing the new text to come up with TF-IDF values. This happens because we cannot calculate IDF values using a corpus of one
+		document, since there are no other messages. The table below shows the first 42 counts and TF-IDF scores  in term-document format for ease of comparison).
+		<br><br>
+		<table class="table table-striped">
+			 <thead>
+				 <tr>
+					 <tr>
+						 	<th>Token</th>
+							<th>Count</th>
+							<th>Tfidf</th>
+					</tr>
+				</thead>
+ 			 <tbody>
+					{% for token, count, tfidf in ziparrays %}
+					{% if loop.last %}
+					<tr>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+					</tr>
+					{% else %}
+				  		<tr>
+						 		<td>{{token}}</td>
+								<td>{{count}}</td>
+								<td>{{tfidf}}</td>
+							</tr>
+					 {% endif %}
+					 {% endfor %}
+			 </tbody>
+		</table>
+		<br>
+		<li>
+			<b>Note:</b> If at first you don't see values, try using the tokens in the first column. Repeat the same token and notice what happens to the Tfidf value.
+		</li>
+	</div>
+		<br>
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L89">Source Code</a>
 		<br><br>
 	</p>
 	<p>
 		<br>
 		<h3>Reducing Dimensions via Singular Value Decomposition</h3>
+		<br>
+		While using a TF-IDF representation instead of simple counts boosts the training data's signal, we still have a 2,000-long sparse vector of mostly 0s.
+		To solve this problem, a commonly used technique is to project this sparse matrix into what's called a <b>Latent Semantic</b> space using
+		a mathematical technique called <b>Singular Value Decomposition  (SVD)</b>. This is a technique used for data compression and other applications. In
+		simple terms, SVD reduces a large matrix with lots of columns into a small one with few columns, keeping as much of the original information as possible.
+		In our case, we reduce 2,000 tokens into 800 "components" (columns) which capture most of the essence of the tokens into higher-level semantic concepts.
 		<br><br>
-		IN PROGESS...
+		This is where explainability starts to fail and the so-called "black box" of machine learning starts. There's no learning yet, we're still just processing
+		text, but an SVD projection is a mathematical procedure performed on numeric matrices. The way a human mind groups words into higher-levle concepts such
+		as a phrase or a succint explanation of a concept, is conceivably very different than how SVD captures the variance of tokens into a single component
+		that might best describe these tokens. In other words: I cannot tell you what the first column of the SVD represents, all I can say is that it is the
+		component that explains most of the variance in the data - it captures the most information.
 		<br><br>
+		The technical details of SVD are beyond the scope of this explanation but for the interested, I recommend
+		<a href="https://www.youtube.com/playlist?list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv">Prof. Steve Brunton's YouTube Series</a> and his
+		<a href="https://www.amazon.com/Data-Driven-Science-Engineering-Learning-Dynamical/dp/1108422098">Data-Driven Science and Engineering book</a>.
+		<br><br>
+		<button onclick="ShowDeets5()">See Your SVD</button>
+		<br><br>
+		<div id="Deets5">
+		A <b>low-rank SVD</b> is one which captures the most-informative N components of an SVD projection. After testing low-rank SVD implementations
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/06_DimensionalityReduction.ipynb">here</a> and
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/06b_DimensionalityReduction.ipynb">here</a> I ended up
+	 	adapting the <i>TruncatedSVD</i> class from Scikit-Learn's ML library
+		(<a href="https://github.com/scikit-learn/scikit-learn/blob/95119c13af77c76e150b753485c662b7c52a41a2/sklearn/decomposition/_truncated_svd.py#L25">original</a>,
+		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L30">adaptation</a>) compressing
+		the 2,000-long matrix into an 800-long one.
+		<br><br>
+		The reason I adapted the TruncatedSVD class is similar to the reason I kept the IDF values during the TF-IDF calculation. When we apply SVD to the original
+		training matrix it is projected into a semantic space wherein SVD components represent higher-level semantic concepts in the training data, not in the new data.
+	 	This training SVD space needs to be leveraged during the prediction process - we wouldn't be able to project a single document into this same
+		latent semantic space without keeping matrices from the training data to be able to do so (see SVD deployment code below). Here are the first 17 SVD components
+		of the 800-long vector, which proportionally correspond to about 42 terms in a 2,000-long vector yet capture a much greater
+		 information signal:
+		 <br><br>
+		 <table class="table table-striped">
+ 			 <thead>
+ 				 <tr>
+ 					 <tr>
+						 <th>Component</th>
+ 							<th>SVD Projection</th>
+ 					</tr>
+ 				</thead>
+  			 <tbody>
+ 					{% for component in svd %}
+					{% if loop.last %}
+							<tr>
+								<td>...</td>
+								<td>...</td>
+							</tr>
+					{% else %}
+ 				  		<tr>
+								<td>{{loop.index}}</td>
+ 								<td>{{component}}</td>
+ 							</tr>
+					{% endif %}
+ 					{% endfor %}
+ 			 </tbody>
+ 		</table>
+	</div>
+	<br>
+	<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/27_PreProcess_TestSet.ipynb">TruncatedSVD adaptation</a>,
+	<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/aae96efb6e5ba9875efa3a2ede8d70958d8e025f/custom/deploy_models.py#L108">SVD in deployment</a>
 	</p>
 	<p>
 		<br>
@@ -298,17 +417,17 @@
 	</p>
 	<p>
 	<br>
-	<h2 style="color:#3c90b5;">Feeding The Processed Text Into A Model</h2>
+	<h2 style="color:#3c90b5; text-align:center">Feeding The Processed Text Into A Model</h2>
 	<br>
 	</p>
 	<p>
 	<br>
-	<h2 style="color:#3c90b5;">Making A Prediction</h2>
+	<h2 style="color:#3c90b5; text-align:center">Making A Prediction</h2>
 	<br>
 	</p>
 	<p>
 	<br>
-	<h2 style="color:#3c90b5;">Rendering The Prediction</h2>
+	<h2 style="color:#3c90b5; text-align:center">Rendering The Prediction</h2>
 	<br>
 	</p>
 	<script>
@@ -330,6 +449,22 @@
 	}
 	function ShowDeets3() {
 		var y = document.getElementById("Deets3");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets4() {
+		var y = document.getElementById("Deets4");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets5() {
+		var y = document.getElementById("Deets5");
 	  if (y.style.display === "block") {
 	    y.style.display = "none";
 	  } else {
