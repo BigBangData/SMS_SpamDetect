@@ -473,7 +473,9 @@
  		 </tbody>
  		</table>
 		</div>
-	<br>
+		The final processed numeric array is an 801-long vector that consists of the mean spam consine similarity feature stacked onto the
+		800-long SVD of the 2,000-long document-term matrix of TF-IDF scores.
+	<br><br>
 		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/08_CosineSimilarity.ipynb">Cosine Similarity Notebook</a>,
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/e0afac56b5b0569c431b2607ef24b83f7ed67390/custom/deploy_models.py#L113">Deployment Code</a>
 	<br>
@@ -482,56 +484,67 @@
 	<br>
 	<h2 style="color:#3c90b5; text-align:center">Feeding The Processed Text Into A Model</h2>
 	<br>
-	The final processed numeric array is an 801-long vector that consists of the mean spam consine similarity feature stacked onto the
-	800-long SVD of the 2,000-long document-term matrix of TF-IDF scores. The entire processing step plus feeding this array into a
-	pre-trained model and making a prediction is encapsulated by two lines of code in the final deployment script - two lines of code
-	that accomplish a lot under the hood. We've covered the first line, now we'll cover the second.
+	All processing steps and feeding the transformed text into a pre-trained model are encapsulated in the first line of code below,
+	and all the ML model development and training and the final prediction are encapsulated in the second line of code. These two
+	little lines accomplish a lot under the hood. We've covered the first line, now we'll cover the second.
 	<br><br>
 	<center><img src="../static/img/Explanation7.PNG" alt="Explanation 7" width=33%></center>
 	<center><i>Preprocessing and predicting in
 		<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/25203fc4aa0b6d2497dcd3d6993f706d1b9d1438/spam-detect42.py#L37">
 			two lines of code</a></i></center>
 	<br><br>
-	The XGboost_model above is a pre-trained model selected from dozens of models trained over months and evaluated thoroughly for
+	This XGBoost model above is a pre-trained model selected from dozens of models trained over months and evaluated thoroughly for
 	their ability to generalize beyond the training data. The pre-trained model was saved in and is loaded from
-	<a href="https://github.com/BigBangData/SMS_SpamDetect/tree/main/data/5_deployment">this repository</a>. It has a surprisingly
-	light memory footprint at 106KB compared to two of the processing files, especially the SVD transformer
-	which gets used in the new SVD projection calculation and which takes up 47.3MB of space in my local machine.
-	<center><img src="../static/img/Explanation8.PNG" alt="Explanation 8" width=33%></center>
-	<center><i>Saved preprocessing and modeling file sizes</i></center>
-	<br>
-	This is curious because one thinks of machine learning as the model-building and model-predicting phases of a project,
-	yet in NLP there's some learning happening during the text processing phase - as we can see by all the bits and pieces saved up
-	because of the information accumulated there.
+	<a href="https://github.com/BigBangData/SMS_SpamDetect/tree/main/data/5_deployment">this repository</a>.
+  <br><br>
+	<button onclick="ShowDeets8()">See More Details</button>
 	<br><br>
-	The most common definition of ML is that of <a href="http://www.cs.cmu.edu/~tom/">Prof. Tom Mitchell</a>:
-		<blockquote>
-		<i>A machine is said to learn from experience E with respect to some class of tasks T and performance measure P, <br>
-		if its performance at tasks in T, as measured by P, improves with experience E.</i>
-		</blockquote>
-	While I evaluated the accuracy of numerous processing steps in small iterative model evaluation phases using simple models - this
-	is hardly machine learning, more like human learning. It is also fallible, carrying an assumption that a simple model's evaluation
-	transfers to a complex model. I noticed this fallibility when I evaluated whether to use TF-IDF or SVD steps or not with simple vs
-	complex models and saw that more complex structures performed better with more complex models, and vice-versa. Accounting for
-	<a href="https://en.wikipedia.org/wiki/Overfitting">overfitting and generalization</a>, I was able to confirm that, at least with this
-	data and in this project, I could achieve better results (more on this later) with more complex structures and models. Below is an example
-	of a quick evaluation phase for the vocabulary size and number of ngrams as far as accuracy (which is not the best metric as it is too vague),
-	using a simple Logistic Classifier - the peak accuracy plateau around 2,000 trigrams explains why I chose these specific values, yet it
-	is very well possible other values would work better with XGboost, the final model chosen:
+	<div id="Deets8">
+		The model has a surprisingly light memory footprint at 106KB compared to two of the processing files,
+		especially the SVD transformer which gets used in the new SVD projection calculation and which takes up 47.3MB of space in my local machine.
+		<center><img src="../static/img/Explanation8.PNG" alt="Explanation 8" width=33%></center>
+		<center><i>Saved preprocessing and modeling file sizes</i></center>
+		<br>
+		I found this curious because I thought of machine learning as the model-building and model-predicting phases of a project,
+		yet in NLP there's some learning happening during the text processing phase - as we can see by all the bits and pieces saved up
+		because of the information accumulated there.
+		<br><br>
+	</div>
+	<button onclick="ShowDeets9()">See Even More Details</button>
 	<br><br>
-	<center><img src="../static/img/Explanation9.PNG" alt="Explanation 9" width=60%></center>
-	<center><i>Quick evaluation phase during processing</i></center>
+	<div id="Deets9">
+		The most common definition of ML is that of <a href="http://www.cs.cmu.edu/~tom/">Prof. Tom Mitchell</a>:
+			<blockquote>
+			<i>A machine is said to learn from experience E with respect to some class of tasks T and performance measure P, <br>
+			if its performance at tasks in T, as measured by P, improves with experience E.</i>
+			</blockquote>
+		While I evaluated the accuracy of numerous processing steps in small iterative model evaluation phases using simple models - this
+		is hardly machine learning, more like human learning. It is also fallible, carrying an assumption that a simple model's evaluation
+		transfers to a complex model. I noticed this fallibility when I evaluated whether to use TF-IDF or SVD steps or not with simple vs
+		complex models and saw that more complex structures performed better with more complex models, and vice-versa. Accounting for
+		<a href="https://en.wikipedia.org/wiki/Overfitting">overfitting and generalization</a>, I was able to confirm that, at least with this
+		data and in this project, I could achieve better results with more complex structures and models.
+		<br><br>
+		Below is an example of a quick evaluation phase for the vocabulary size and number of ngrams as far as accuracy
+		 (which is not the best metric as it is too vague), using a simple Logistic Classifier - the peak accuracy plateau around 2,000
+		 trigrams explains why I chose these specific values, yet it is very well possible other values would work better with XGboost:
+		<br><br>
+		<center><img src="../static/img/Explanation9.PNG" alt="Explanation 9" width=60%></center>
+		<center><i>Quick evaluation phase during processing</i></center>
+		<br><br>
+	</div>
+	The possibe number of avenues to take and steps to test quickly explodes. Without some project management guildelines, common sense,
+	and a bit of art, finding the best solution given a dataset can be dauntingly out of reach. The project was managed and developed in
+	<a href="https://github.com/BigBangData/NaturalLanguageProcessing/tree/fuji/SMS_SpamDetect">this GitHub repository.</a>
 	<br><br>
-	The number of "things to test" quickly explodes so without some project management guildelines, common sense, and a bit of art,
-	finding the best solution given a dataset can be dauntingly out of reach. At the end, we always settle for good enough. The project
-	was managed and developed in <a href="https://github.com/BigBangData/NaturalLanguageProcessing/tree/fuji/SMS_SpamDetect">this GitHub repository.</a>
+	I wil not delve into details about training statistical models since this topic is vast and has been covered exensively by various
+	degrees, books, and blogs. 	Suffice to say, this was a <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a>
+	project in <a href="https://en.wikipedia.org/wiki/Statistical_classification">binary classification</a> aimed to separate "spam" from "ham"
+	classes	using a dataset with mild class imbalance (roughly 13% spam) that I tackled with classical algorithms (no neural networks or
+	deep learning) using the <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations.
 	<br><br>
-	I won't go into details about training statistical models since this topic is huge and has been covered exensively these days.
-	Suffice to say, this was a <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a> project in
-	<a href="https://en.wikipedia.org/wiki/Statistical_classification">statistical classification</a> aimed to separate "spam" from "ham" classes
-	using a dataset with mild class imbalance (roughly 13% spam) that I tackled with shallow algorithms (as opposed to using neural networks and
-	deep learning) using the <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations
-	and code from various sources (see the acknowledgements below).
+	I'm indebted to various books, tutorials, and blogs online that I consulted along the way, see a full list of 
+	<a href ="https://github.com/BigBangData/SMS_SpamDetect#acknowledgements">acknowledgements here.</a>
 	</p>
 	<p>
 	<br>
@@ -611,6 +624,22 @@
 	}
 	function ShowDeets7() {
 		var y = document.getElementById("Deets7");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets8() {
+		var y = document.getElementById("Deets8");
+	  if (y.style.display === "block") {
+	    y.style.display = "none";
+	  } else {
+	    y.style.display = "block";
+	  }
+	}
+	function ShowDeets9() {
+		var y = document.getElementById("Deets9");
 	  if (y.style.display === "block") {
 	    y.style.display = "none";
 	  } else {
