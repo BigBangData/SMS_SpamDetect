@@ -496,6 +496,10 @@
 	This XGBoost model above is a pre-trained model selected from dozens of models trained over months and evaluated thoroughly for
 	their ability to generalize beyond the training data. The pre-trained model was saved in and is loaded from
 	<a href="https://github.com/BigBangData/SMS_SpamDetect/tree/main/data/5_deployment">this repository</a>.
+	<br><br>
+	Since there really isn't much more to feeding a processed text into a model, in each section below I offer some tidbits about
+	the NLP phase I found interesting and that interfered with my assumptions of ML projects and with my solo project management
+	skills (or lack thereof).
   <br><br>
 	<button onclick="ShowDeets('Deets8')">Memory Details</button>
 	<br><br>
@@ -510,7 +514,7 @@
 		because of the information accumulated there.
 		<br><br>
 	</div>
-	<button onclick="ShowDeets('Deets9')">ML & Learning  Details</button>
+	<button onclick="ShowDeets('Deets9')">Some ML Details</button>
 	<br><br>
 	<div id="Deets9">
 		The most common definition of ML is that of <a href="http://www.cs.cmu.edu/~tom/">Prof. Tom Mitchell</a>:
@@ -533,34 +537,25 @@
 		<center><i>Quick evaluation phase during processing</i></center>
 		<br><br>
 	</div>
-	<br>
-	<h3>Combinatorics and Project Management</h3>
-	<br>
-	Just in the processing phase, the combnation of possible vocabulary sizes, ngram variations, representation types (for example,
-	TF-IDF vs Counts, SVD or not, adding text lengths or cosine similarities or not) quickly exploded to 720. This
-	is before any modeling work. Without project management guildelines, common sense, and a bit of art, finding the best solution given
-	a dataset can be daunting. The project was managed and developed in
-	<a href="https://github.com/BigBangData/NaturalLanguageProcessing/tree/fuji/SMS_SpamDetect">this GitHub repository.</a>
-	Below is another quick processing evaluation phase that suffers from the same possible issue of generalization to complex models.
-	The representation I settled on after more tests was the <b>X_bot_tfidf_svd_cos</b> (Bag-of-upto-Trigrams, TF-IDF, SVD + Cosine similarity
-	feature).
+	<button onclick="ShowDeets('Deets10')">Project Management</button>
 	<br><br>
-	<center><img src="../static/img/Explanation10.PNG" alt="Explanation 10" width=50%></center>
-	<center><i>Quick Evaluation of 12 Representations with a Baseline Logistic Classifier</i></center>
-	<br><br>
-	<h3>Training Models</h3>
-	<br>
-	I wil not delve into details about training statistical models here since this topic is vast and has been covered exensively by various
-	degrees, books, blogs, and online tutorials. 	Suffice to say, this was a <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a>
-	project in <a href="https://en.wikipedia.org/wiki/Statistical_classification">binary classification</a> aimed to separate "spam" from "ham"
-	classes	using a dataset with mild class imbalance (roughly 13% spam) that I tackled with classical algorithms (no neural networks or
-	deep learning) mostly using the <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations.
-	I've also learned a lot from blogs and tutorials.
-	<br><br>
-	<h3>Acknowledgements</h3>
-	<br>
-	I'm indebted to various books, tutorials, and blogs online that I consulted along the way, see a full list of
-	<a href ="https://github.com/BigBangData/SMS_SpamDetect#acknowledgements">acknowledgements here.</a>
+	<div id="Deets10">
+		Just in the processing phase, the combination of possible vocabulary sizes, ngram variations, representation types (TF-IDF vs Counts, SVD or not,
+		adding text lengths or cosine similarities or not) quickly exploded to nearly a thousand - and this before any modeling work.
+		Without project management guildelines, common sense, and a bit of art, finding the best solution given a dataset can be daunting.
+		The project was developed in
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/tree/fuji/SMS_SpamDetect">this GitHub repository</a> and I managed the project
+		more specifically in
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/01_Project_Management.ipynb">this Notebook.</a>
+		<br><br>
+		Below is another quick processing evaluation phase that suffers from the same possible issue of generalization to complex models.
+		The representation I settled on after more tests was the <b>X_bot_tfidf_svd_cos</b> (Bag-of-upto-Trigrams, TF-IDF, SVD + Cosine similarity
+		feature).
+		<br><br>
+		<center><img src="../static/img/Explanation10.PNG" alt="Explanation 10" width=50%></center>
+		<center><i>Quick Evaluation of 12 Representations with a Baseline Logistic Classifier</i></center>
+		<br><br>
+	</div>
 	</p>
 	<p>
 	<br>
@@ -569,25 +564,48 @@
 	<li>
 	<b>How does the model make a prediction?</b>
 	</li>
-	The way a model predicts is related to how it learns - in this section I'll briefly explain at a very high level how XGboost models
-	learn and predict.
-	<br><br>
-	XGBoost stands for <b>Extreme Gradient Boosting</b> which sounds extreme but in fact it is a more
-	<a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">regularized</a> (i.e. controlled, constrained) version of
-	<b>Gradient Boosting</b>, as far as I can understand. Both of these ML models - and by model here I mean the class of models not
-	specific models such as the one I trained - are quite advanced versions of simpler classes of models so to explain them I first need
-	to define some simpler models and terms:
-	<ul>
-		<li><b>Gradient:</b></li>
-	<ul>
 	<br>
+	The way a model predicts is related to how it learns and what kind of model it is. In this section I'll go into some of the main concepts
+	of learning and predicting, which models I trained, and why I chose XGBoost for this app.
+	<br><br>
+	<h3>Training Models</h3>
+	<br>
+	I will not delve into details about training statistical models here since this topic is vast and has been covered exensively by various
+	degrees, books, blogs, and online tutorials. Suffice to say, this was a <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a>
+	project in <a href="https://en.wikipedia.org/wiki/Statistical_classification">binary classification</a> aimed to separate "spam" from "ham"
+	classes	using a dataset with mild class imbalance (roughly 13% spam) that I tackled with classical algorithms (no neural networks or
+	deep learning) mostly using the <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations.
+	<br><br>
+	At a high level, models learn with examples (rows in a dataset, or "instances" in ML lingo) that have attributes (columns in the dataset, "features" in ML)
+	and labels, in the case of binary classification like here a "spam" or "ham" label. This is what the data looks like:
+	<br><br>
 	IN PROGRESS...
+	<br><br>
+	<h3>XGBoost</h3>
+	<br>
+	XGBoost stands for <b>Extreme Gradient Boosting</b> which sounds extreme but in fact it is a more
+	<a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">regularized</a> (i.e. controlled, constrained) version of <b>Gradient Boosting.</b>
+	<br>
+	IN PROGRES..
 	<br>
 	</p>
 	<p>
 	<br>
 	<h2 style="color:#3c90b5; text-align:center">Rendering The Prediction</h2>
-	<br>
+	<br><br>
+	IN PROGERSS...
+	<br><br>
+	</p>
+	<p>
+		<h3>Acknowledgements</h3>
+		<br>
+		I'm indebted to various books, tutorials, and blogs online that I consulted along the way, see a full list of
+		<a href="https://github.com/BigBangData/SMS_SpamDetect#acknowledgements">acknowledgements here.</a>
+		To get this app off the ground, I'm indebted to Chayan Kathuria's tutorial on how to build and deploy a spam classifier app on heroku
+		<a href="https://towardsdatascience.com/build-deploy-a-spam-classifier-app-on-heroku-cloud-in-10-minutes-f9347b27ff72">in 10 minutes</a>
+		(it took me a couple evenings). For getting me unstuck and suffering through my atrocious css and js scripts I'm indebted to
+		Information Systems Management Researcher <a href="https://daveeargle.com/">Dave Eargle</a>.
+		<br><br>
 	</p>
 	<script>
 	function ShowDeets(Id) {
@@ -603,8 +621,7 @@
 </html>
 <footer>
 	<div>
-		<ul>
-			<h3><a href="/">Try Again!</a></h3>
-		</ul>
+		<h2 style="color:#3c90b5; text-align:center"><a style="text-decoration:none" href="/">Try Predicting Spam Again!</a></h2>
+	<br><br><br>
 	</div>
 </footer>
