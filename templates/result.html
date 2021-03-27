@@ -560,15 +560,13 @@
 	</p>
 	<p>
 	<br>
-	<h2 style="color:#3c90b5; text-align:center">Making A Prediction</h2>
+																		<h2 style="color:#3c90b5; text-align:center">Making A Prediction</h2>
 	<br>
 	The way a model predicts is related to how it learns and what kind of model it is. In this section I'll go into some of the concepts
 	of statistical learning, which models I trained, and why I chose XGBoost for this app.
 	<br><br>
 	<h2 style="color:#9c275d;">Statistical Learning</h2>
-	<br>
 	<h3>What is a model?</h3>
-	<br>
 	There are many kinds of models: mental, mathematical, physical, statistical, predictive, inferential, causal, and so forth.
 	A model is a simplified version of reality. For the most part, we simplify reality to make sense of it and predict what is likely to happen.
 	Too simple a model and its understanding and predictions will generally be <b>biased</b>; too complex, and they'll generally suffer from <b>variance</b>.
@@ -578,94 +576,105 @@
 	beyond the data it sees.
 	<br><br>
 	<h3>Why do models need data?</h3>
-	<br>
 	A model relies on some kind of experience or knowledge of reality, which can be measured and captured as data. Reality is vast and diverse,
 	and data captures only a fraction of it, so the data capture process has to be carefully conceived and conducted - if your data is garbage,
 	no amount of modeling work will turn it into diamonds.
 	<br><br>
-	In statistical modling, we aim to "fit" the data somehow. When models <br>underfit<br> the data they're biased, when they
-	<b>overfit</b> they have too much variance. In both cases they don't generalize - with bias it is because the models fail to capture the
-	variance in the data well, they fail to learn from the data all they can; with variance it is because the models capture too much of the
-	variance in the data, they learn too well what they've been shown so that when they're shown new things they don't have the flexibility
-	to adapt and compare to what they've seen.
+	<button onclick="ShowDeets('Deets11')">Statistical Modeling</button>
 	<br><br>
-	Say you grew up in a community that only had wooden chairs and your model of a chair is that it needs to be made of wood. In this case, your
-	model overfits the data it's seen, specifically, for an instance of a chair, the feature "material" is not helping generalize. When you move
-	and see plastic chairs you will be unable to understand or predict these objects to be chairs. On the other hand, had your model been so
-	simple and general that a chair meant "any object you can sit on", your model would be biased and when given a couch or stool, it'd have
-	predicted those to be chairs as well. In this case features such as "size" or "has a back" were missing from the model. Training a model
-	includes showing it instances (examples) of objects which might be chairs or not, and showing various attributes or features of those objects,
-	and getting the model to estimate whether they are chairs or not. The more instances and the more features, the more data in other words, the
-	better the chances our models will be able to understand reality and predict well.
+	<div id="Deets11">
+		In statistical modeling, we aim to "fit" the data somehow. When models <b>underfit</b> the data they're biased, when they
+		<b>overfit</b> they have too much variance. In both cases they don't generalize - with bias it is because the models fail to capture the
+		variance in the data well, they fail to learn from the data all they can; with variance it is because the models capture too much of the
+		variance in the data, they learn too well what they've been shown so that when they're shown new things they don't have the flexibility
+		to adapt and compare to what they've seen.
+		<br><br>
+		Say you grew up in a community that only had wooden chairs and your model of a chair is that it needs to be made of wood. In this case, your
+		model overfits the data it's seen, specifically, for an instance of a chair, the feature "material" is not helping generalize. When you move
+		and see plastic chairs you will be unable to understand or predict these objects to be chairs. On the other hand, had your model been so
+		simple and general that a chair meant "any object you can sit on", your model would be biased and when given a couch or stool, it'd have
+		predicted those to be chairs as well. In this case features such as "size" or "has a back" were missing from the model. Training a model
+		includes showing it instances (examples) of objects which might be chairs or not, and showing various attributes or features of those objects,
+		and getting the model to estimate whether they are chairs or not. The more instances and the more features, the more data in other words, the
+		better the chances our models will be able to understand reality and predict well.
+		<br><br>
+	</div>
+	<h3>What are the main types of statistical models?</h3>
+	<button onclick="ShowDeets('Deets12')">See Details </button>
 	<br><br>
-	<h3>What are the main types of models?</h3>
-	<br>
-	Models learn in different ways, for example, there are <b>unsupervised</b> and <b>supervised</b> models. The main difference is that supervised
+	<div id="Deets12">
+	  Models learn in different ways, for example, there are <b>unsupervised</b> and <b>supervised</b> models. The main difference is that supervised
 		models have a "label" or "target" attribute they're aiming to predict, such as the chair example above. Unsupervised ones have no label - for
 		example, we could have a ton of objects of various types without any labels and we could just throw all of these objects into a model that
 		groups these objects into "natural groups given the data" - meaning, we don't teach it what groups, we don't label those groups. This is helpful
 		when we either don't know the groups ahead of time or want to learn about the data, such as in an exploratory data analysis phase of a project.
-	<br><br>
-	This project uses <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a> to predict spam. There are <b>regression</b>
-	and <b><a href="https://en.wikipedia.org/wiki/Statistical_classification">classification</a></b> tasks that supervised models perform - the former
-	assumes that the label or target of prediction is continuous (such as predicting mpg from a vehicle's weight and number of cylinders) and the latter,
-	which is the case of the chair and our spam case, assumes that the target has discrete levels that can be easily counted (the distinction is more
-	practical than theoretical). The simplest classificaion case is binary: 1 or 0, yes or no, spam or ham.
-	<br><br>
-	Another characteristic of this project is that it favored <b>classical ML algorithms</b> and not neural networks or deep learning. I used the Python
-	 <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations from it and from other sources
-	 (see the acknowledgements at the end). I avoided neural networds and especially deep learning because of hardware, time, and financial constraints -
-	 but I also wanted the algorithm to be a bit more explainable. (This did not matter as much since we lost a lot of explainability when applying SVD.)
-	<br><br>
+		<br><br>
+		This project uses <a href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a> to predict spam. There are <b>regression</b>
+		and <b><a href="https://en.wikipedia.org/wiki/Statistical_classification">classification</a></b> tasks that supervised models perform - the former
+		assumes that the label or target of prediction is continuous (such as predicting mpg from a vehicle's weight and number of cylinders) and the latter,
+		which is the case of the chair and our spam case, assumes that the target has discrete levels that can be easily counted (the distinction is more
+		practical than theoretical). The simplest classificaion case is binary: 1 or 0, yes or no, spam or ham.
+		<br><br>
+		Another characteristic of this project is that it used <b>classical ML algorithms</b> and not neural networks or deep learning. I used the Python
+		 <a href="https://scikit-learn.org/stable/modules/classes.html">Scikit-Learn API</a> and my own custom adaptations from it and from other sources
+		 (see the acknowledgements at the end). I avoided neural nets and DL mostly because the data is small and I knew classical algorithms would
+		 arrive at optimal solutions given the data, in other words, the main barrier to generalization would be the data not the model.
+		<br><br>
+	</div>
 	<h3>How do supervised models learn?</h3>
-	<br>
-	A supervised model learns with examples (rows, or instances) that have attributes (columns, or features) and labels (a target). Let's consider
-	a simple example of binary classification using the target "is poisonous" (1=yes, 0=no) in the famous
-	<a href="https://archive.ics.uci.edu/ml/datasets/mushroom">mushroom dataset</a>. Notice how the features are easy to interpret, here are a few
-	instances and select features:
+	<button onclick="ShowDeets('Deets13')">See Learning Details</button>
 	<br><br>
-	<center><img src="../static/img/Explanation11.PNG" alt="Explanation 11" width=30%></center>
-	<center><i>Learning labels (poisonous or not) from instances (mushrooms) and features (shape, color, odor, ...)</i></center>
-	<br><br>
-	For every mushroom a model uses the features to predict whether it is poisonous or not. This is easily interpretable compared to the spam detection
-	case. With text data, the tranformations make it harder to interpret but the principle is the same - each feature is an attribute or characteristic
-	of the instance (a text) that captures some information on whether that instance is spam or not. It just so happens that our features are SVD
-	components, 800 of them (plus the cosine similarities):
-	<br><br>
-	<center><img src="../static/img/Explanation12.PNG" alt="Explanation 12" width=60%></center>
-	<center><i>Learning labels (spam or not) from instances (documents) and features (SVD values)</i></center>
-	<br><br>
-	The label is hidden and the first predictions are blind guesses. When training the model we show the correct label and tell the model how wrong it was.
-	This isn't as black and white as "dear model, you gave me a 1, but it is a 0, you're 100% wrong: <i>bad model</i>", since most models make probability
-	estimates as to whether the label is 1. Say the model predicts 0.9 and the label is 1, then it's only wrong by 0.1, but if it predicts 0.5, the
-	error is four times larger. The model is then penalized according to the amount of error it makes.
-	<br><br>
-	Penalizing a model happens at the feature level so that the model learns which features are more (or less) correct and adjusts "weights"
-	 given to those features. A weight is a number that multiplies a given feature, giving it more (or less) importance.
-	 Generally only few features turn out to be great predictors and most features end up being discarded entirely or just reduced to having very
-	 little influence over the output (the prediction). In the mushroom dataset, odor is one of the best predictors, but not so much shape and color.
-	<br><br>
+	<div id="Deets13">
+		A supervised model learns with examples (rows, or instances) that have attributes (columns, or features) and labels (a target). Let's consider
+		a simple example of binary classification using the target "is poisonous" (1=yes, 0=no) in the famous
+		<a href="https://archive.ics.uci.edu/ml/datasets/mushroom">mushroom dataset</a>. Notice how the features are easy to interpret, here are a few
+		instances and select features:
+		<br><br>
+		<center><img src="../static/img/Explanation11.PNG" alt="Explanation 11" width=30%></center>
+		<center><i>Learning labels (poisonous or not) from instances (mushrooms) and features (shape, color, odor, ...)</i></center>
+		<br><br>
+		For every mushroom a model uses the features to predict whether it is poisonous or not. This is easily interpretable compared to the spam detection
+		case. With text data, the tranformations make it harder to interpret but the principle is the same - each feature is an attribute or characteristic
+		of the instance (a text) that captures some information on whether that instance is spam or not. It just so happens that our features are SVD
+		components, 800 of them (plus the cosine similarities):
+		<br><br>
+		<center><img src="../static/img/Explanation12.PNG" alt="Explanation 12" width=60%></center>
+		<center><i>Learning labels (spam or not) from instances (documents) and features (SVD values)</i></center>
+		<br><br>
+		The label is hidden and the first predictions are blind guesses. When training the model we show the correct label and tell the model how wrong it was.
+		This isn't as black and white as "dear model, you gave me a 1, but it is a 0, you're 100% wrong: <i>bad model</i>", since most models make probability
+		estimates as to whether the label is 1. Say the model predicts 0.9 and the label is 1, then it's only wrong by 0.1, but if it predicts 0.5, the
+		error is four times larger. The model is then penalized according to the amount of error it makes.
+		<br><br>
+		Penalizing a model happens at the feature level so that the model learns which features are more (or less) correct and adjusts "weights"
+		 given to those features. A weight is a number that multiplies a given feature, giving it more (or less) importance.
+		 Generally only few features turn out to be great predictors and most features end up being discarded entirely or just reduced to having very
+		 little influence over the output (the prediction). In the mushroom dataset, odor is one of the best predictors, but not so much shape and color.
+		<br><br>
+	</div>
 	<h3>How do models learn to predict beyond the data they see?</h3>
-	<br>
-	Predicting the future is very hard. We mimic the process by splitting our data into chunks and pretending an unseen chunk is "the future".
-	At the beginning of the project we make a basic split into <b>training data</b> (usually approx. 80%) and <b>test data</b> - and we do not peek much
-	into the test data, since that would mean peeking into the future. We save it for the final model evaluation, to see how it'd likely
-	perform with completely unseen data. We do this only once.
+	<button onclick="ShowDeets('Deets14')">See Learning Details</button>
 	<br><br>
-	With the rest of the training data, we split it into various chunks, called "folds", generally 5 or 10 folds. We take care that each fold is representative
-	of the data: for example, stratification is used to preserve the "class imbalance" (which in our case was 13/87 meaning, 13% spam and 87% ham) and randomized
-	methods are used to select random instances from the data. We hide one of the folds from the model - again, we pretend that fold is the future. In 10-fold
-	<a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)">cross validation</a> we train the model on 9 folds and test its predictions on the 10th
-	or held-out fold. We do this 10 times iterating through all the folds and take measures of central tendency (mean) and variance (standard deviation) to be able
-	to determine with more robustness how well the model generalizes. Certain models might achieve high accuracy but might also have too much variance, they
-	might also on occasion have quite low accuracy, so we prefer models with low variance.
-	<br><br>
+	<div id="Deets14">
+		<li><b>Train, Text Split</b></li>
+		Predicting the future is very hard. We mimic the process by splitting our data into chunks and pretending an unseen chunk is "the future".
+		At the beginning of the project we make a basic split into <b>training data</b> (usually approx. 80%) and <b>test data</b> - and we do not peek much
+		into the test data, since that would mean peeking into the future. We save it for the final model evaluation, to see how it'd likely
+		perform with completely unseen data. We do this only once.
+		<br><br>
+		<li><b>Cross Validation</b></li>
+		With the rest of the training data, we split it into various chunks, called "folds", generally 5 or 10 folds. We take care that each fold is representative
+		of the data: for example, stratification is used to preserve the "class imbalance" (which in our case was 13/87 meaning, 13% spam and 87% ham) and randomized
+		methods are used to select random instances from the data. We hide one of the folds from the model - again, we pretend that fold is the future. In 10-fold
+		<a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)">cross validation</a> we train the model on 9 folds and test its predictions on the 10th
+		or held-out fold. We do this 10 times iterating through all the folds and take measures of central tendency (mean) and variance (standard deviation) to be able
+		to determine with more robustness how well the model generalizes. Certain models might achieve high accuracy but might also have too much variance, they
+		might also on occasion have quite low accuracy, so we prefer models with low variance.
+		<br><br>
+	</div>
 	<h2 style="color:#9c275d;">Models Trained</h2>
-	<br>
-	<h3>What kinds of models were trained?</h3>
-	<br>
-	I trained a variety of models including Support Vector Machines, Decitions Trees, Random Forests, AdaBoost and Gradient Boosting Classifiers,
-	Voting Classifiers, and an XGBoost model at the very end. Most finalists did quite well during both cross-validation and model evaluation,
+	 I trained a variety of models including Support Vector Machines, Decitions Trees, Random Forests, AdaBoost and Gradient Boosting Classifiers,
+	 Voting Classifiers, and an XGBoost model at the very end. Most finalists did quite well during both cross-validation and model evaluation,
 	 achieving approx. 99% accuracy and high scores in other classification metrics as well, such as sensitivity and specificity. In the following notebooks
 	 I performed model evaluation
 	 with <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/28_EvaluateModels_1.ipynb">single confusion matrices</a>,
@@ -684,21 +693,62 @@
 	You should get a spam prediction despite the text being short and having no numbers.
 	<br><br>
 	<h2 style="color:#9c275d;">XGBoost</h2>
-	<br>
 	I chose XGBoost for the app, despite being a latecomer in my modeling effort, because it performed really well out of the box, having one of the lowest variances
 	and yet comparably high scores, and a relatively quick prediction time as well. To be fair, it takes longer to predict, but it still is quite fast and well under
 	a second so this wasn't an issue. See details in
 	<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/31_EvaluateModels_4.ipynb">this notebook</a>.
 	<br>
 	<h3>How does XGBoost work?</h3>
-	<br>
 	XGBoost stands for <b>Extreme Gradient Boosting</b> which sounds extreme but in fact it is a more
-	<a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">regularized</a> version of <b>Gradient Boosting.</b> Regularization refers to the process of
-	balancing the bias-variance tradeoff. Boosting models tend to learn very well and overfit quite badly so the smarts of the algorithm lie in how to regularize this
-	learning well.
+	<a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">regularized</a> version of <b>Gradient Boosting.</b> Regularization is the process of
+	balancing the bias-variance tradeoff. (Boosting models tend to learn very well and overfit quite badly so figuring out a good regularization method is imperative.)
+	XGBoost is not exactly an algorithm but rather an "open-source software library which provides a gradient boosting framework" (
+	<a href="https://en.wikipedia.org/wiki/XGBoost">Wikipedia</a>, accessed 3/27/2021) that has become popular as the library of choice for many winning ML teams in
+	recent competitions.
+	<br><br>
+	To delve into XGBoost we need to learn several topics, chief among them, in reverse order:
+	<ul>
+		<li><a href="https://en.wikipedia.org/wiki/Gradient_boosting">Gradient Boosting</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Gradient">Gradient</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Boosting_(machine_learning)">Boosting</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Random_forest">Random Forests</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating">Bagging</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Ensemble_learning">Ensemble Learning</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Decision_tree_learning">Decision Trees</a></li>
+	</ul>
 	<br>
-	IN PROGRESS..
+	<button onclick="ShowDeets('Deets15')">Decision Trees</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
 	<br>
+	<button onclick="ShowDeets('Deets16')">Ensemble Learning</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
+	<br>
+	<button onclick="ShowDeets('Deets17')">Bagging</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
+	<br>
+	<button onclick="ShowDeets('Deets18')">Random Forests</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
+	<br>
+	<button onclick="ShowDeets('Deets19')">Boosting</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
+	<br>
+	<button onclick="ShowDeets('Deets20')">Gradient and Gradient Boosting</button>
+	<br><br>
+	<div id="Deets15">
+	</div>
+	XGBoost history and links...
+	<a href="https://arxiv.org/abs/1603.02754">2016 paper</a>
+	<a href="https://github.com/dmlc/xgboost">GitHub repo</a>
 	</p>
 	<p>
 	<br>
