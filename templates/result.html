@@ -727,62 +727,98 @@
 		conditions (decision trees take random seeds as an initialization parameter) they might turn out to be completely different. Yet because
 		the decisions a tree makes are so interpretable, despite the lack of rubustiness, these models are often used in the industry when explanatory
 		power is needed. For a deep dive into this type of model, I cannot recommend enough Josh Starmer's
-		<a href="https://www.youtube.com/playlist?list=PLblh5JKOoLUKAtDViTvRGFpphEc24M-QH">CART (Classification And Regression Trees) YouTube videos</a>,
-		which are unbeatable at explaining Decision Trees (Josh's StatQuest Channel is unbeatable, period). Here I'll just cover the bare bones.
+		<a href="https://www.youtube.com/playlist?list=PLblh5JKOoLUKAtDViTvRGFpphEc24M-QH">CART (Classification And Regression Trees) YouTube playlist</a>,
+		which is unbeatable at explaining Decision Trees (Josh's StatQuest Channel is unbeatable, period). Here I'll just cover the bare bones.
 		<br><br>
 		A decision tree is so intuitive it is easier to start by looking at the results of a classification tree than to explain how it arrives at those results.
-		Using this quickly made up dataset I constructed a basic classfification tree:
+		Using this quickly made up dataset I constructed a simplistic decision tree to classify whether a patient is fit or unfit for a particular type of
+		exam:
 		<br><br>
 		<center><img src="../static/img/Explanation13.PNG" alt="Explanation 13" width=25%></center>
-		<center><i>Toy dataset for classifying healthy individuals based on a few features.</i></center>
+		<center><i>Toy dataset for classifying patients based on a few features.</i></center>
 		<br><br>
-		The tree's classifications can be explained by a series of decisions starting from a root note and splitting on yes/no branches into nodes and leaves. The
-		nodes are those with decisions and splitting criteria (such as exercising a daily average of 37.5 mins or less) and leaves are the final groupings or
-		classifications.
+		A tree's classifications can be explained by a series of decisions starting from a root note and splitting on yes/no branches into lower nodes and leaves.
+		Nodes present further splits while leaves are final classifications. The tree algorithm arrives at optimal splitting criteria such as having 2.5 veggie
+		servings or less below. Skipping the details of how algorithms arrive at notes and splitting criteria, the important thing to notice with single decision
+		trees	is how they vary significantly in shape depending on a random initialization of the algorithm (see more details below). I've used two slightly
+		different seeds and produced very different trees.
 		<br><br>
 		<center><img src="../static/img/Explanation14.PNG" alt="Explanation 14" width=65%></center>
-		<center><i>Graph of Classification Tree's Decisions and Data Viz of Boundaries on a Plane.</i></center>
+		<center><i>Graphs: Decision Structure & Classification Boundaries on a Plane.</i></center>
 		<br><br>
-		Starting from the root node, we see that the decision tree algorithm quickly recognized that the exercise
-		feature was the best for the initial split, at once classifying four unhealthy individuals just because they
-		exercise less than 37.5 minutes daily on average. This was the first split, the horizontal line in the second
-		graph showing the classification boundaries. The second feature that made the cleanest classifications turned out
-		to be Age. I really thought it would be number of daily veggie servings when I was typing out this dataset.
-		It turns out the tree saw that by splitting on Age next it would arrive at three pure leaves.
+		Tree algorithms seek to reduce the <b>impurity of a node</b> until they can't anymore or some hyperparameter (a parameter specified by the user to
+		regulate the tree's behavior) tells it to stop before overfitting. Impurity is a measure of the "mix of classes" in a given node, or diversity of a node:
+		the least diverse, the more pure. There are many ways to measure impurity but the most common are <b>gini</b> and <b>entropy</b>. Entropy is a measure of
+		disorder of a system so the higher the entropy the more impure or mixed. We see that in our example, since I had a 50/50 mix, the entropy of the root node
+		is 1 (the highest), and since the trees were able to perfectly classify the instances, the leaves are pure (entropy=0).
 		<br><br>
-		Purity is what drives trees. A pure leaf has zero entropy and all instances belong to the same class. At the opposite
-		side of the spectrum, an entropy of 1 means a 50/50 mix of classes (at least in our case). Reducing entropy leads
-		to information gain, which is an overall goal in doing data science. Traveling down the tree we can see this reduction
-		in entropy and gain in purity. More realistic trees don't always end up with pure leaves, which might lead to overfitting,
-		and also with more realistic data exaustive searches for the best possible splits are too time consuming so tree algorithms
-		tend to favor less time-consuming approaches. Often we prune trees before they overfit, and use other criteria to measure purity
-		such as gini impurity.
+		We can see thus how entropy decreases at each node. If a split increases entropy, it is not made and that node becomes a leaf. With more realistic and complex
+		data, exhaustively searching features on which to split, and exaustively searching splitting criteria becomes unfeasible, so heuristic algorithms are the
+		norm, using random searches. Algorithms are initialized with a pseudorandom seed (as is common in many ML algorithms) and single trees are not perfect
+		solutions but good enough solutions. Leaves are often partly impure and that is okay, in fact we prune trees so that they generalize better.
+		<br><br>
+		We can also see how trees divide the data into rectangles. Notice how the first split is horizontal and the next split is vertical in the plots above.
+		If your data looked like a parabola, a tree would be a bad choice of model, although possible. Trees are great at nonlinear classification in higher dimensions so
+		they are great for many real-world problems - the only problem with single trees is how they are innacurate and cannot predict the future well, but what
+		we lose in prediction is gained in interpretability, a common tradeoff in ML.
 		<br><br>
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets16')">Ensemble Learning</button>
 	<br><br>
-	<div id="Deets15">
+	<div id="Deets16">
+		A solution to the problem of inflexible and inaccurate single trees is to combine many trees into a forest, get all their predictions and take a vote.
+		This draws on the principle of the "wisdom of the crowds" - briefly, that if you get an answer from many and independent people about a topic, they'll
+		make different kinds of errors (because they have different biases) arriving at the answer, but the central tendency (could be the mean, or mode) will
+		be a lot more accurate than an individual answer. This is easily demonstrated in street fairs with jelly bean jars by asking random people to guess
+		the number of beans. The errors cancel themselves out and the crowd often guesses with high accuracy. The general class of methods for this is called
+		<a href="https://en.wikipedia.org/wiki/Ensemble_learning">ensemble learning</a> and below we will look at some of the particular methods in this class.
+		<br><br>
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets17')">Bagging</button>
 	<br><br>
-	<div id="Deets15">
+	<div id="Deets17">
+		One form of ensemble learning is called Bagging, which is short for
+		<a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating"><b>B</b>ootstrap <b>Agg</b>regat<b>ing</b></a>.
+		<a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">Bootstrapping</a> is basically "random sampling with replacement", a very powerful
+		technique to generate different samples from the same data. The important part is the replacement part: you can end up with repeated instances. Say
+		you are bootstrapping from six dice throws, you might end up with a dataset of: 2, 3, 1, 1, 3, 6. If you were not replacing you would by definition
+		end up with all six, say: 2, 3, 1, 4, 6, 5. If you create various datasets that aren't bootstrapped they will all contain the same samples, so in
+		essence (unless order matters for some reason) they are all the same dataset. If you bootstrap, they might all be slightly different datasets. This means
+		we can, with the same data, bootstrap ourselves (pick ourselves up by our bootstraps, like Baron Munchausen) into creating many different datasets.
+		Sounds like magic, but it works.
+		<br><br>
+		Aggregating the results of many bootstrapped samples of our data and taking a majority vote or some other measure of central tendency we can therefore
+		reduce variance and improve the stability of predictions. Bagging can be used with many procedures but it is commonly applied to decision trees because
+		of their inherent instability.
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets18')">Random Forests</button>
 	<br><br>
-	<div id="Deets15">
+	<div id="Deets18">
+		A <a href="https://en.wikipedia.org/wiki/Random_forest">Random Forest</a> uses a type of bagging applied to decision trees that takes a subsample of features
+		from the data so as to increase the independence of the trees. This is especially important when there are many features (such as in most NLP cases) and
+		when there's likelihood that many of these featuers are correlated (see <a href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a>).
+		The number of features to use is a hyperparameter that is controlled by the user (say, a data scientist training a model) so as to find the optimal
+		number for a given problem.
+		<br><br>
+		Josh Starmer's
+		<a href="https://www.youtube.com/playlist?list=PLblh5JKOoLUIE96dI3U7oxHaCAbZgfhHk">Random Forests YouTube playlist</a> is again a great source for learning
+		more about the details such as how at each node all features are considered, and how not all instances are actually used in bagging so we end up with an
+		"out-of-bag" dataset of unused instances that can serve as a form of validation. (One caveat is that if you tune your hyperparameter using the OOB dataset
+		you will in essence overfit this dataset so you still need a solid CV scheme to avoid overfitting). I spend a great deal of time using random forests during
+		training and the finalists arrived at very similar metrics during evaluation to boosting methods, which are generally found to be more accurate.
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets19')">Boosting</button>
 	<br><br>
-	<div id="Deets15">
+	<div id="Deets19">
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets20')">Gradient and Gradient Boosting</button>
 	<br><br>
-	<div id="Deets15">
+	<div id="Deets20">
 	</div>
 	XGBoost history and links...
 	<a href="https://arxiv.org/abs/1603.02754">2016 paper</a>
