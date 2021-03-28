@@ -673,27 +673,30 @@
 		<br><br>
 	</div>
 	<h2 style="color:#9c275d;">Models Trained</h2>
-	 I trained a variety of models including Support Vector Machines, Decitions Trees, Random Forests, AdaBoost and Gradient Boosting Classifiers,
+	 I trained a variety of models including Support Vector Machines, Decisions Trees, Random Forests, AdaBoost and Gradient Boosting Classifiers,
 	 Voting Classifiers, and an XGBoost model at the very end. Most finalists did quite well during both cross-validation and model evaluation,
-	 achieving approx. 99% accuracy and high scores in other classification metrics as well, such as sensitivity and specificity. In the following notebooks
-	 I performed model evaluation
-	 with <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/28_EvaluateModels_1.ipynb">single confusion matrices</a>,
-	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/29_EvaluateModels_2.ipynb">learning curves</a>,
-	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/30_EvaluateModels_3.ipynb">by looking at example predictions</a>,
-	 and more fully using a
-	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/31_EvaluateModels_4.ipynb">classification report.</a>
+	 achieving 99% accuracy and high scores in other classification metrics as well, such as sensitivity and specificity. In the following notebooks
+	 I performed model evaluation using
+	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/28_EvaluateModels_1.ipynb">single confusion matrices</a>,
+	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/29_EvaluateModels_2.ipynb">learning curves</a>, by looking at
+	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/30_EvaluateModels_3.ipynb">prediction examples</a>,
+	 and more fully with
+	 <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/31_EvaluateModels_4.ipynb">classification reports.</a>
 	<br><br>
-	<li><b>"This is all fine and dandy, but when I added my own text your model predicted it wrong, 100% wrongedy-wrong-wrong."</b></li>
+	<li><b>Why did this app fail to predict my text?</b></li>
 	<br>
-	While predictions using cross-validation and the test data were 99% accurate, this accuracy level clearly does not extend to any text input provided to this app,
-	since the possibilities are almost unbounded. The more unlike the training data (and it was small, only 3,900 instances), the worse the model will do,
-	despite my best efforts to make it generalize. In my brief experience using the app, I suspect it overfits on a couple of main features. I'd bet there are
-	a couple of features in our SVD that represent the "numberiness" and "lengthiness" of a text. So the more numbers you use or the longer your text is, the more
-	probable it'd be predicted as spam. You might find that common bigrams such as "call now" or "free quote" are also spam predictors, try "call now for a free quote"?
-	You should get a spam prediction despite the text being short and having no numbers.
+	With this app I pursued learning how various models work and explaining the final end-to-end process, not searching for great labeled data, which is hard to
+	come by and potentially expensive. A production implementation that provides business value would be entirely different, deal with scaling issues, massive
+	datasets, and potentially different algorithms although XGBoost scales well. The main pitfall of this app is the small dataset. I trained the models on 3,900
+	instances, which is clearly not enough to be future proof. If a prediction failed it is likely because it was vastly different than anything in the SMS Spam
+	Collection.
+	<br><br>
+	In my brief experience using the app, I suspect it overfits on a couple of main features. I'd imagine there are a couple of features (SVD components) that represent
+	the "numberiness" and "lengthiness" of a text. So the more numbers you use or the longer your text is, the likelier it is be predicted as spam. Despite this you
+	might find that short texts with no numbers can be classified as spam, if they include spam-like bigrams - try "call now for a free quote"?
 	<br><br>
 	<h2 style="color:#9c275d;">XGBoost</h2>
-	I chose XGBoost for the app, despite being a latecomer in my modeling effort, because it performed really well out of the box, having one of the lowest variances
+	I chose XGBoost for the app, despite being a latecomer in the modeling effort, because it performed really well out of the box, having one of the lowest variances
 	and yet comparably high scores, and a relatively quick prediction time as well. To be fair, it takes longer to predict, but it still is quite fast and well under
 	a second so this wasn't an issue. See details in
 	<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/31_EvaluateModels_4.ipynb">this notebook</a>.
@@ -720,6 +723,41 @@
 	<button onclick="ShowDeets('Deets15')">Decision Trees</button>
 	<br><br>
 	<div id="Deets15">
+		A decision tree is a highly interpretable type of model - yet its main flaw is not being robust: given slightly different initial
+		conditions (decision trees take random seeds as an initialization parameter) they might turn out to be completely different. Yet because
+		the decisions a tree makes are so interpretable, despite the lack of rubustiness, these models are often used in the industry when explanatory
+		power is needed. For a deep dive into this type of model, I cannot recommend enough Josh Starmer's
+		<a href="https://www.youtube.com/playlist?list=PLblh5JKOoLUKAtDViTvRGFpphEc24M-QH">CART (Classification And Regression Trees) YouTube videos</a>,
+		which are unbeatable at explaining Decision Trees (Josh's StatQuest Channel is unbeatable, period). Here I'll just cover the bare bones.
+		<br><br>
+		A decision tree is so intuitive it is easier to start by looking at the results of a classification tree than to explain how it arrives at those results.
+		Using this quickly made up dataset I constructed a basic classfification tree:
+		<br><br>
+		<center><img src="../static/img/Explanation13.PNG" alt="Explanation 13" width=25%></center>
+		<center><i>Toy dataset for classifying healthy individuals based on a few features.</i></center>
+		<br><br>
+		The tree's classifications can be explained by a series of decisions starting from a root note and splitting on yes/no branches into nodes and leaves. The
+		nodes are those with decisions and splitting criteria (such as exercising a daily average of 37.5 mins or less) and leaves are the final groupings or
+		classifications.
+		<br><br>
+		<center><img src="../static/img/Explanation14.PNG" alt="Explanation 14" width=65%></center>
+		<center><i>Graph of Classification Tree's Decisions and Data Viz of Boundaries on a Plane.</i></center>
+		<br><br>
+		Starting from the root node, we see that the decision tree algorithm quickly recognized that the exercise
+		feature was the best for the initial split, at once classifying four unhealthy individuals just because they
+		exercise less than 37.5 minutes daily on average. This was the first split, the horizontal line in the second
+		graph showing the classification boundaries. The second feature that made the cleanest classifications turned out
+		to be Age. I really thought it would be number of daily veggie servings when I was typing out this dataset.
+		It turns out the tree saw that by splitting on Age next it would arrive at three pure leaves.
+		<br><br>
+		Purity is what drives trees. A pure leaf has zero entropy and all instances belong to the same class. At the opposite
+		side of the spectrum, an entropy of 1 means a 50/50 mix of classes (at least in our case). Reducing entropy leads
+		to information gain, which is an overall goal in doing data science. Traveling down the tree we can see this reduction
+		in entropy and gain in purity. More realistic trees don't always end up with pure leaves, which might lead to overfitting,
+		and also with more realistic data exaustive searches for the best possible splits are too time consuming so tree algorithms
+		tend to favor less time-consuming approaches. Often we prune trees before they overfit, and use other criteria to measure purity
+		such as gini impurity.
+		<br><br>
 	</div>
 	<br>
 	<button onclick="ShowDeets('Deets16')">Ensemble Learning</button>
