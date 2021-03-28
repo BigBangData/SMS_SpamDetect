@@ -811,24 +811,85 @@
 		training and the finalists arrived at very similar metrics during evaluation to boosting methods, which are generally found to be more accurate.
 	</div>
 	<br>
-	<button onclick="ShowDeets('Deets19')">Boosting</button>
+	<button onclick="ShowDeets('Deets19')">Boosting and AdaBoost</button>
 	<br><br>
 	<div id="Deets19">
+		<a href="https://en.wikipedia.org/wiki/Boosting_(machine_learning)">Boosting</a> is a class of methods (or an "ensemble meta-algorithm") first proposed in
+		the early 1990s. The main idea is to turn a set of weak learners into a strong learner. The first algorithm,
+		<a href="https://en.wikipedia.org/wiki/AdaBoost">AdaBoost</a> (short for <b>Ada</b>ptive <b>Boosting</b>) was introduced in 1997. AdaBoost works by fitting
+		learners on previous learners' mistakes, so it learns sequentially. Say a weak learner underfitted (was biased) and made X misclassifications, by focusing
+		on these X instances the new learner can do a bit better, and so on and so forth so future generations of learners zoom in on the hard cases. AdaBoost does
+		this by tweaking weights associated with instances (as opposed to featuers). The overall procedure is similar to that of the ubiquitous
+		<a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a> optimization algorithm, except that instead of
+		gradually minimizing a cost function (an overall prediction error), AdaBoost adds ever-stronger predictors to an ensemble.
 	</div>
 	<br>
-	<button onclick="ShowDeets('Deets20')">Gradient and Gradient Boosting</button>
+	<button onclick="ShowDeets('Deets20')">Gradient Boosting</button>
 	<br><br>
 	<div id="Deets20">
+		<a href="https://en.wikipedia.org/wiki/Gradient_boosting">Gradient Boosting</a> was also proposed in 1997 and is very similar to AdaBoost. The main difference
+		is that instead of adjusting weights, it fits the new learners on previous learners' residual errors themselves. Gradient Boosting was first developed
+		for regression tasks and then generalized to include classification tasks.
+		<br><br>
+		The terminology around this class of algorithms is a bit fuzzy. I first learned about them as "Gradient Boosting Machines" using the
+		<a href="https://cran.r-project.org/web/packages/gbm/index.html">gbm R package</a> which is titled "Generalized Boosted Regression Models". The gradients
+		are the residuals in regression tasks, and in classification we use the negative log likelihood, similar to logistic regression. Logistic regression is
+		a misnomer itself, since it is use for classification, and the "gradient" part is also a bit of misnomer since it uses finite differences not continous
+		mathematics. The best explanation I could find was buried in
+		<a href="https://datascience.stackexchange.com/questions/31609/why-do-we-use-gradients-instead-of-residuals-in-gradient-boosting">this StackExchange
+			post</a>. For a deep dive into details I again recommend Josh Starmer's excellent
+			<a href="https://www.youtube.com/playlist?list=PLblh5JKOoLUJjeXUvUE0maghNuY2_5fY6">Gradient Boost YouTube playlist</a>.
 	</div>
-	XGBoost history and links...
-	<a href="https://arxiv.org/abs/1603.02754">2016 paper</a>
-	<a href="https://github.com/dmlc/xgboost">GitHub repo</a>
+	<br>
+	<h3>XGBoost</h3>
+		XGBoost was first proposed in a <a href="https://arxiv.org/abs/1603.02754">2016 paper</a> and since then has been a major success. The
+		<a href="https://en.wikipedia.org/wiki/XGBoost">Wikipedia article</a> (accessed 3/28/2021) summarizes well its advantages over Gradient Boosting:
+		<ul>
+			<li>Clever penalization of trees</li>
+			<li>A proportional shrinking of leaf nodes</li>
+			<li>Newton Boosting</li>
+			<li>Extra randomization parameter</li>
+			<li>Implementation on single, distributed systems and out-of-core computation</li>
+		</ul>
+		XGBoost presents a number of hyperparameters to tune, yet it works great out of the box with the provided default values. My final XGBoost model
+		is trained in <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/32_Deployment_Prep.ipynb">this notebook<a>
+			and uses the following hyperparameters, most of which are defaults (I provided the random state, evaluation metric and whether to use a label
+			encoder):
+		<br><br>
+		<center>
+		<code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px; width: 70%;">
+					XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+			              colsample_bynode=1, colsample_bytree=1, eval_metric='error',
+			              gamma=0, gpu_id=-1, importance_type='gain',
+			              interaction_constraints='', learning_rate=0.300000012,
+			              max_delta_step=0, max_depth=6, min_child_weight=1, missing=nan,
+			              monotone_constraints='()', n_estimators=100, n_jobs=8,
+			              num_parallel_tree=1, random_state=42, reg_alpha=0, reg_lambda=1,
+			              scale_pos_weight=1, seed=42, subsample=1, tree_method='exact',
+			              use_label_encoder=False, validate_parameters=1, verbosity=None)
+		</code>
+		</center>
+		<br>
+		Links:
+		<ul>
+			<li><a href="https://github.com/dmlc/xgboost">GitHub repo</a></li>
+			<li><a href="https://xgboost.readthedocs.io/en/latest/">XGBoost docs</a></li>
+			<li><a href="https://www.youtube.com/playlist?list=PLblh5JKOoLULU0irPgs1SnKO6wqVjKUsQ">Josh Starmer's XGBoost YouTube playlist</a></li>
+		</ul>
 	</p>
 	<p>
 	<br>
 	<h2 style="color:#3c90b5; text-align:center">Rendering The Prediction</h2>
 	<br><br>
-	IN PROGERSS...
+	Rendering the prediction is as simple as running the new text through the processing and getting a prediction from the pre-trained XGBoost
+	model, which trains lots of decision trees, turning weak ones into strong ones by fitting on errors with all the fancy penalization and randomization,
+	then getting that final 0 or 1 and rendering it in this web page as text. This is done in the Python deployment script
+	<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/main/spam-detect42.py">spam-detect42.py</a> and the
+	<a href="https://github.com/BigBangData/SMS_SpamDetect/blob/main/templates/result.html">results.html</a> file.
+	<br><br>
+	<center><img src="../static/img/Explanation15.PNG" alt="Explanation 15" width=80%></center>
+	<center><i>Rendering numerical prediction (0/1) as text in the results page.</i></center>
+	<br><br>
 	<br><br>
 	</p>
 	<p>
@@ -836,10 +897,10 @@
 		<br>
 		I'm indebted to various books, tutorials, and blogs online that I consulted along the way, see a full list of
 		<a href="https://github.com/BigBangData/SMS_SpamDetect#acknowledgements">acknowledgements here.</a>
-		To get this app off the ground, I'm indebted to Chayan Kathuria's tutorial on how to build and deploy a spam classifier app on heroku
+		To get this app off the ground, I'm grateful to Chayan Kathuria's tutorial on how to build and deploy a spam classifier app on heroku
 		<a href="https://towardsdatascience.com/build-deploy-a-spam-classifier-app-on-heroku-cloud-in-10-minutes-f9347b27ff72">in 10 minutes</a>
-		(it took me a couple evenings). For getting me unstuck and suffering through my atrocious css and js scripts I'm indebted to
-		Information Systems Management Researcher <a href="https://daveeargle.com/">Dave Eargle</a>.
+		(it took me a couple evenings). Finally, for getting me unstuck during deployment, I'm obliged to Information Systems Management Researcher
+		<a href="https://daveeargle.com/">Dave Eargle</a>.
 		<br><br>
 	</p>
 	<script>
