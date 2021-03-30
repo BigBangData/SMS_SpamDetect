@@ -851,10 +851,10 @@
 			<li>Extra randomization parameter</li>
 			<li>Implementation on single, distributed systems and out-of-core computation</li>
 		</ul>
-		XGBoost presents a number of hyperparameters to tune, yet it works great out of the box with the provided default values. My final XGBoost model
-		is trained in <a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/32_Deployment_Prep.ipynb">this notebook<a>
-			and uses the following hyperparameters, most of which are defaults (I provided the random state, evaluation metric and whether to use a label
-			encoder):
+		XGBoost presents a number of hyperparameters to tune, (see <a href="https://xgboost.readthedocs.io/en/latest/parameter.html">docs</a>) yet it works great
+		out of the box with a few tweaks. The XGBoost model deployed here is trained in
+		<a href="https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/32_Deployment_Prep.ipynb">this notebook<a>
+			and uses the following hyperparameters, most of which are defaults.
 		<br><br>
 		<center>
 		<code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px; width: 70%;">
@@ -869,8 +869,14 @@
 			              use_label_encoder=False, validate_parameters=1, verbosity=None)
 		</code>
 		</center>
+		I provided the seed, evaluation metric ('error' is the most basic one for binary classification), and use_label_encoder=False as it's
+		deprecated (see <a href="https://xgboost.readthedocs.io/en/latest/python/python_api.html#global-configuration">global config</a>). Some noteworthy
+	  parameters are: 100 trees (n_estimators is the number of gradient boosted trees or "boosting rounds"); a max interaction depth of 6 (tree depth,
+		which amounts to how much interaction happens between features); learning rate ("eta") = 0.3, which relatively high, and L2 (Euclidean)
+		regularization. I could've spent more time tweaking this model but XGBoost is powerful and meant for big data so it makes no sense to spend time
+		to essentially "overfit and further regularie" this small dataset when the limitation is the data not the model.
 		<br>
-		Links:
+		Other XGBoost Links:
 		<ul>
 			<li><a href="https://github.com/dmlc/xgboost">GitHub repo</a></li>
 			<li><a href="https://xgboost.readthedocs.io/en/latest/">XGBoost docs</a></li>
