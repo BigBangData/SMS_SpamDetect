@@ -869,16 +869,17 @@
 			              use_label_encoder=False, validate_parameters=1, verbosity=None)
 		</code>
 		</center>
+		<br><br>
 		I provided the seed, evaluation metric ('error' is the most basic one for binary classification), and use_label_encoder=False as it's
 		deprecated (see <a href="https://xgboost.readthedocs.io/en/latest/python/python_api.html#global-configuration">global config</a>). Some noteworthy
 	  parameters are: 100 trees (n_estimators is the number of gradient boosted trees or "boosting rounds"); a max interaction depth of 6 (tree depth,
-		which amounts to how much interaction happens between features); learning rate ("eta") = 0.3, which relatively high, and L2 (Euclidean)
+		which amounts to how much interaction happens between features); learning rate ("eta") = 0.3 (relatively high but that's okay), and L2 (Euclidean)
 		regularization. I could've spent more time tweaking this model but XGBoost is powerful and meant for big data so it makes no sense to spend time
-		to essentially "overfit and further regularie" this small dataset when the limitation is the data not the model.
-		<br>
-		Other XGBoost Links:
+		to essentially "overfit and further regularize" on this small dataset when the limitation is the data not the model.
+		<br><br>
+		<br>Further Links:</b>
 		<ul>
-			<li><a href="https://github.com/dmlc/xgboost">GitHub repo</a></li>
+			<li><a href="https://github.com/dmlc/xgboost">XGBoost GitHub repo</a></li>
 			<li><a href="https://xgboost.readthedocs.io/en/latest/">XGBoost docs</a></li>
 			<li><a href="https://www.youtube.com/playlist?list=PLblh5JKOoLULU0irPgs1SnKO6wqVjKUsQ">Josh Starmer's XGBoost YouTube playlist</a></li>
 		</ul>
