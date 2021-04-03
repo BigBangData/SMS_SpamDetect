@@ -1,5 +1,7 @@
 # SMS Spam Detect
 
+<center><h2><a href="https://spam-detect42.herokuapp.com/">Try the App.</a></h2></center>
+
 ## The Problem
 
 Spam detection is an old and continuing problem. I get spam texts every day, and wonder how they got through my spam filter, given that every day I flag them 
@@ -12,23 +14,30 @@ I achieve 99% accuracy (see more evaluation metrics and tests in
 [this notebook](https://github.com/BigBangData/NaturalLanguageProcessing/blob/fuji/SMS_SpamDetect/31_EvaluateModels_4.ipynb)) during model evaluation, 
 yet since the training data is small I expect this model to generalize poorly, despite all the tests.
 
-So I deploy the model in an app to see how it does in the wild - with unseen data - to fully understand the challenge. 
-The app is [spam-detect42](https://spam-detect42.herokuapp.com/).
+So I deploy the model in an app to see how it does in the wild - with unseen data - to fully understand the challenge.
 
-![homepage](./static/img/homepage.PNG)
+<center>
+		<img src="./static/img/homepage.PNG" alt="homepage">
+		<em>homepage</em>
+</center>
 
 ## The App 
 
-It's a free-hosted app so the loading time might be a minute at first, but prediction should be quick and the results page well worth the effort. 
-In it, I offer a detailed look into all that goes behind the scenes to be able to transform a text into a prediction. 
+Hosted in [Heroku](https://www.heroku.com/), the app consists of a simple homepage (above) with a form that accepts a text input and a results page (below) 
+in which I offer a detailed look into all that goes behind the scenes to transform this text into a prediction of whether it is spam or not.
 
-![results](./static/img/results.PNG)
+<center>
+		<img src="./static/img/results.PNG" alt="results">
+		<em>top of results page</em>
+</center>
+<br><br>
 
-This is meant to demistify machine learning and "A.I." - at least the classical kind (not neural networks which are a bit more of a black box).
+The app is meant to demistify machine learning (or "AI" as it's commonly referred to) - since it often is but a series, however complex and probabilistic, 
+of transformations of inputs into outputs - a text becomes a 1 or a 0.
 
 Machines are not intelligent. As one of the founders of the field, [Michael I. Jordan](https://people.eecs.berkeley.edu/~jordan/), expertly comments 
-in [this Lex Fridman Podcast](https://lexfridman.com/michael-i-jordan/): the I. in A.I. is a misnomer. We have yet to fully comprehend how humans think, 
-let alone believe that machines do so. They follow instructions, even if very complex and computationally intensive ones that mimic randomness and choice.
+in [this Lex Fridman Podcast](https://lexfridman.com/michael-i-jordan/): the "I" in "AI" is a misnomer. We have yet to fully comprehend how humans think, 
+let understand whether machines think at all - and if so, how that might differ from how humans think.
 
 ## Business Applications
 
