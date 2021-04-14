@@ -17,8 +17,8 @@ yet since the training data is small I expect this model to generalize poorly, d
 So I deploy the model in an app to see how it does in the wild - with unseen data - to fully understand the challenge.
 
 <center>
-		<img src="./static/img/homepage.PNG" alt="homepage">
-		<em>homepage</em>
+        <img src="./static/img/homepage.PNG" alt="homepage">
+        <em>homepage</em>
 </center>
 
 ## The App 
@@ -27,8 +27,8 @@ Hosted in [Heroku](https://www.heroku.com/), the app consists of a simple homepa
 in which I offer a detailed look into all that goes behind the scenes to transform this text into a prediction of whether it is spam or not.
 
 <center>
-		<img src="./static/img/results.PNG" alt="results">
-		<em>top of results page</em>
+        <img src="./static/img/results.PNG" alt="results">
+        <em>top of results page</em>
 </center>
 <br><br>
 
@@ -56,16 +56,11 @@ ended up deploying. I am indebted to numerous tutorials and blogs I've read and 
 - [Data Science Dojo's](https://datasciencedojo.com/) [Introduction To Text Analytics With R](https://www.youtube.com/playlist?list=PLTJTBoU5HOCR5Vkah2Z-AU76ZYsZjGFK6) by [David Langer](https://www.daveondata.com/)
 - Aurélien Géron's [Classification Notebook](https://github.com/ageron/handson-ml/blob/master/03_classification.ipynb) 
 - Scikit-Learn's [API Docs](https://scikit-learn.org/stable/modules/classes.html)
+- Chayan Kathuria's tutorial [Build & Deploy a Spam Classifier app on Heroku Cloud in 10 minutes!](https://towardsdatascience.com/build-deploy-a-spam-classifier-app-on-heroku-cloud-in-10-minutes-f9347b27ff72)
 - Analytics Vidhya's [Introduction to Topic Modeling and Latent Semantic Analysis](https://www.analyticsvidhya.com/blog/2018/10/stepwise-guide-topic-modeling-latent-semantic-analysis/)
 - Prof. Steve Brunton's [YouTube lectures on Singular Value Decomposition](https://www.youtube.com/playlist?list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv) 
-- Prof. Steve Brunton's [Data-Driven Science and Engineering book](https://www.amazon.com/Data-Driven-Science-Engineering-Learning-Dynamical/dp/1108422098) 
 - Kevin Arvai's tutorial [Fine Tuning a Classifier in Scikit-Learn](https://towardsdatascience.com/fine-tuning-a-classifier-in-scikit-learn-66e048c21e65)
 - Cole Brendel's article [Quickly Compare Multiple Models](https://towardsdatascience.com/quickly-test-multiple-models-a98477476f0)
 - Josh Starmer's [StatQuest YouTube channel](https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw)
 
 ---
-
-
-
-
-

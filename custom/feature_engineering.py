@@ -1,4 +1,24 @@
 #!/usr/bin/env python
+
+# Copyright 2021 Marcelo Sanches
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Attributions
+#
+# The expand_contractions function is a verbatim copy from 
+# Dipanjan Sarkar, see specific attribution below.
+
 import re
 import os
 import time
@@ -18,7 +38,12 @@ from scipy.sparse import csr_matrix
 from collections import Counter
 from sklearn.base import BaseEstimator, TransformerMixin
 
-# functions
+# The expand_contractions function was written by Dipanjan Sarkar,
+# Data Science Lead at Applied Materials, kdnuggets.com contributor,
+# author of Practical Machine Learning with Python (Apache 2.0 License)
+# https://github.com/dipanjanS/practical-machine-learning-with-python
+# https://www.kdnuggets.com/2018/08/practitioners-guide-processing-understanding-text-2.html
+
 def expand_contractions(text, contractions_map):
     
     pattern = re.compile('({})'.format('|'.join(contractions_map.keys())), 
@@ -81,6 +106,10 @@ with open("contractions_map.json") as f:
 url_extractor = urlextract.URLExtract()
 lemmatizer = WordNetLemmatizer()
 
+# The DocumentToFeaturesCounterTransformer class was heavily adapted from 
+# A. Geron's classificaion notebook:
+# In [152]: class EmailToWordCounterTransformer
+# https://github.com/ageron/handson-ml/blob/master/03_classification.ipynb
 
 class DocumentToFeaturesCounterTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, expand_contractions=True, lower_case=True, 

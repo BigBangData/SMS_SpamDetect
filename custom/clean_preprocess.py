@@ -1,4 +1,32 @@
 #!/usr/bin/env python
+
+# Copyright 2021 Marcelo Sanches
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Attributions
+#
+# The expand_contractions function and WordCounterToVectorTransformer 
+# class are verbatim copies from Dipanjan Sarkar and Aurelien Geron's
+# work.
+# 
+# The other three classes were the focus of my efforts, yet were heavily 
+# adapted from A. Geron's original class in his famous classification 
+# notebook from his book: Hands-On Machine Learning with Scikit-Learn, 
+# Keras, and TensorFlow published by O'Reilly.
+# 
+# See code for specific attributions and links.
+
 import re
 import os
 import time
@@ -18,11 +46,16 @@ from scipy.sparse import csr_matrix
 from collections import Counter
 from sklearn.base import BaseEstimator, TransformerMixin
 
+# The expand_contractions function was written by Dipanjan Sarkar,
+# Data Science Lead at Applied Materials, kdnuggets.com contributor,
+# author of Practical Machine Learning with Python (Apache 2.0 License)
+# https://github.com/dipanjanS/practical-machine-learning-with-python
+# https://www.kdnuggets.com/2018/08/practitioners-guide-processing-understanding-text-2.html
+
 # load contractions map
 with open("contractions_map.json") as f:
     contractions_map = json.load(f)
-
-# functions
+    
 def expand_contractions(text, contractions_map):
     
     pattern = re.compile('({})'.format('|'.join(contractions_map.keys())), 
@@ -54,7 +87,11 @@ url_extractor = urlextract.URLExtract()
 lemmatizer = WordNetLemmatizer()
 
 
-# classes
+# The three Word-to-Counter transformer classes were heavily adapted from 
+# A. Geron's classificaion notebook:
+# In [152]: class EmailToWordCounterTransformer
+# https://github.com/ageron/handson-ml/blob/master/03_classification.ipynb
+
 class DocumentToWordCounterTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, expand_contractions=True, lower_case=True, 
                  replace_usernames=True, unescape_html=True, 
@@ -274,7 +311,11 @@ class DocumentToNgramCounterTransformer(BaseEstimator, TransformerMixin):
             X_transformed.append(tokens_counts)
         return np.array(X_transformed)
 
-    
+# The WordCounterToVectorTransformer transformer class is a verbatim copy from
+# A. Geron's classificaion notebook:
+# In [154]:
+# https://github.com/ageron/handson-ml/blob/master/03_classification.ipynb
+
 class WordCounterToVectorTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, vocabulary_size=1000):
         self.vocabulary_size = vocabulary_size

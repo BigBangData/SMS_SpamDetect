@@ -1,4 +1,19 @@
 # #!/usr/bin/env python
+
+# Copyright 2021 Marcelo Sanches
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import time
 import numpy as np
 import pandas as pd
@@ -59,8 +74,12 @@ def extract_df(gd):
                    , axis=1)
     return df
 
-
 # Plot Learning Curves
+
+# The train_plot and plot_learning_curve functions were heavily adapted from
+# Scikit-Learn's plot_learning_curve example:
+# https://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html
+
 def train_plot(clf, X, y, cv, verbose, train_sizes, n_jobs, 
                scorer_, metric, axes, axis):
     """
@@ -96,7 +115,8 @@ def train_plot(clf, X, y, cv, verbose, train_sizes, n_jobs,
     axes[axis].legend(loc="lower right")
     axes[axis].set_ylabel(metric)
     
-
+  
+    
 def plot_learning_curve(clf, title, X, y, axes=None, ylim=(.95, 1.01), 
                         cv=5, train_sizes=np.linspace(.1, 1.0, 5),
                         verbose=0, n_jobs=-1):
